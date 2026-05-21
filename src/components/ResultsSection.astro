@@ -1,0 +1,241 @@
+---
+// ResultsSection.astro — Frontier VLM benchmark + our training results
+---
+<section id="results" class="content-section">
+  <div class="section-container">
+    <h2 class="section-title">Results</h2>
+
+    <h3 class="results-h3">Frontier VLM benchmark on ViewSuite-5K test (530 view pairs)</h3>
+    <p class="results-lead">
+      Accuracy / Success&nbsp;Rate (%) on Short (<em>d</em>&nbsp;&lt;&nbsp;3) and Long (<em>d</em>&nbsp;≥&nbsp;3) splits.
+      Best in each column is <strong>bold</strong>.
+    </p>
+
+    <div class="results-table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="model-col">Model</th>
+            <th colspan="3" class="grp grp-p2v">Path-to-View</th>
+            <th colspan="3" class="grp grp-v2p">View-to-Path</th>
+            <th colspan="3" class="grp grp-ivp">Interactive View Planning</th>
+            <th rowspan="2">Overall</th>
+          </tr>
+          <tr>
+            <th>Short</th><th>Long</th><th>All</th>
+            <th>Short</th><th>Long</th><th>All</th>
+            <th>Short</th><th>Long</th><th>All</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="row-baseline">
+            <td>Random Response</td>
+            <td>20.7</td><td>24.6</td><td>23.3</td>
+            <td>24.3</td><td>26.5</td><td>25.7</td>
+            <td>2.2</td><td>0.0</td><td>0.8</td>
+            <td>16.6</td>
+          </tr>
+          <tr class="row-header"><td colspan="11">Proprietary Models</td></tr>
+          <tr>
+            <td>GPT-5.4 Pro</td>
+            <td><b>70.7</b></td><td><b>43.8</b></td><td><b>53.1</b></td>
+            <td><b>72.4</b></td><td>39.0</td><td><b>50.7</b></td>
+            <td>32.6</td><td>11.0</td><td>18.5</td>
+            <td><b>40.8</b></td>
+          </tr>
+          <tr>
+            <td>Gemini 3.1 Pro</td>
+            <td>63.6</td><td>40.9</td><td>48.8</td>
+            <td>53.0</td><td><b>47.7</b></td><td>49.5</td>
+            <td>28.8</td><td><b>17.4</b></td><td><b>21.4</b></td>
+            <td>39.9</td>
+          </tr>
+          <tr>
+            <td>GPT-5.4</td>
+            <td>57.1</td><td>42.9</td><td>47.8</td>
+            <td>60.5</td><td>37.5</td><td>45.6</td>
+            <td><b>33.7</b></td><td>7.5</td><td>16.6</td>
+            <td>36.7</td>
+          </tr>
+          <tr>
+            <td>Grok 4.20 Beta</td>
+            <td>61.4</td><td>38.0</td><td>46.1</td>
+            <td>44.9</td><td>44.5</td><td>44.6</td>
+            <td>17.4</td><td>2.9</td><td>7.9</td>
+            <td>32.9</td>
+          </tr>
+          <tr>
+            <td>GPT-5.1</td>
+            <td>60.3</td><td>35.1</td><td>43.9</td>
+            <td>52.4</td><td>33.4</td><td>40.1</td>
+            <td>12.0</td><td>3.2</td><td>6.2</td>
+            <td>30.1</td>
+          </tr>
+          <tr>
+            <td>Claude Opus 4.6</td>
+            <td>46.7</td><td>28.4</td><td>34.8</td>
+            <td>47.6</td><td>38.4</td><td>41.6</td>
+            <td>23.9</td><td>3.8</td><td>10.8</td>
+            <td>29.0</td>
+          </tr>
+          <tr>
+            <td>Gemini 3 Pro</td>
+            <td>50.5</td><td>31.0</td><td>37.8</td>
+            <td>44.9</td><td>35.5</td><td>38.8</td>
+            <td>13.6</td><td>7.0</td><td>9.3</td>
+            <td>28.6</td>
+          </tr>
+          <tr class="row-header"><td colspan="11">Open-Weight Models</td></tr>
+          <tr>
+            <td>Qwen3.5-397B</td>
+            <td>57.6</td><td>30.1</td><td>39.7</td>
+            <td>44.3</td><td>30.8</td><td>35.5</td>
+            <td>12.5</td><td>0.0</td><td>4.3</td>
+            <td>26.5</td>
+          </tr>
+          <tr>
+            <td>GLM-4.6V</td>
+            <td>36.4</td><td>23.2</td><td>27.8</td>
+            <td>31.4</td><td>29.7</td><td>30.2</td>
+            <td>9.2</td><td>1.2</td><td>4.0</td>
+            <td>20.7</td>
+          </tr>
+          <tr>
+            <td>Qwen2.5-VL-72B</td>
+            <td>28.3</td><td>29.3</td><td>28.9</td>
+            <td>35.7</td><td>29.9</td><td>31.9</td>
+            <td>2.2</td><td>0.6</td><td>1.1</td>
+            <td>20.7</td>
+          </tr>
+          <tr>
+            <td>Qwen3-VL-32B</td>
+            <td>27.2</td><td>27.5</td><td>27.4</td>
+            <td>41.1</td><td>28.5</td><td>32.9</td>
+            <td>4.3</td><td>0.0</td><td>1.5</td>
+            <td>20.6</td>
+          </tr>
+          <tr>
+            <td>Kimi K2.5</td>
+            <td>35.9</td><td>24.6</td><td>28.5</td>
+            <td>18.4</td><td>29.4</td><td>25.5</td>
+            <td>4.9</td><td>1.2</td><td>2.5</td>
+            <td>18.8</td>
+          </tr>
+          <tr>
+            <td>Qwen2.5-VL-7B</td>
+            <td>23.9</td><td>32.5</td><td>29.5</td>
+            <td>27.0</td><td>22.7</td><td>24.2</td>
+            <td>7.1</td><td>0.0</td><td>2.5</td>
+            <td>18.7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="results-h3 tres-h3">Results on Interactive View Planning</h3>
+    <p class="results-lead">
+      Success rate (%) under the calibrated 0.5&nbsp;m / 30° threshold. Our framework lifts a 7B model
+      from <strong>2.5% → 47.8%</strong>, beating every proprietary VLM evaluated.
+    </p>
+
+    <div class="results-table-wrap small-table">
+      <table class="results-table">
+        <thead>
+          <tr><th class="method-col">Method</th><th>Short</th><th>Long</th><th>All</th></tr>
+        </thead>
+        <tbody>
+          <tr class="row-header"><td colspan="4">Prompting Baselines</td></tr>
+          <tr><td>Qwen2.5-VL-7B-Instruct</td><td>7.1</td><td>0.0</td><td>2.5</td></tr>
+          <tr><td>GPT-5.4 Pro</td><td>32.6</td><td>11.0</td><td>18.5</td></tr>
+          <tr><td>Gemini 3.1 Pro</td><td>28.8</td><td>17.4</td><td>21.4</td></tr>
+          <tr class="row-header"><td colspan="4">Training Baselines</td></tr>
+          <tr><td>Direct PPO</td><td>7.0</td><td>1.2</td><td>3.2</td></tr>
+          <tr><td>Direct GRPO (filter)</td><td>10.8</td><td>2.2</td><td>5.2</td></tr>
+          <tr><td>Success-Only Bootstrapping</td><td>14.0</td><td>2.0</td><td>6.2</td></tr>
+          <tr class="row-header"><td colspan="4">Ablations of Our Framework</td></tr>
+          <tr><td>Random-graph</td><td>25.4</td><td>6.4</td><td>13.0</td></tr>
+          <tr><td>1 iter + RL</td><td>24.3</td><td>5.4</td><td>12.0</td></tr>
+          <tr><td>2 iter + RL</td><td>49.7</td><td>16.2</td><td>27.9</td></tr>
+          <tr class="row-header ours"><td colspan="4">Ours (Self-Exploration + View Graph Distillation, 3 iters)</td></tr>
+          <tr class="ours-row"><td>Qwen2.5-VL-7B-Instruct</td><td><b>67.2</b></td><td><b>36.9</b></td><td><b>47.8</b></td></tr>
+          <tr class="ours-row"><td>Qwen3-VL-8B-Instruct</td><td><b>56.8</b></td><td><b>19.4</b></td><td><b>32.5</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .results-h3 {
+    color: #1e1b4b;
+    font-size: 1.15rem;
+    margin: 0 auto 0.4rem auto;
+    text-align: center;
+  }
+  .tres-h3 { margin-top: 3rem; }
+  .results-lead {
+    max-width: 800px;
+    margin: 0 auto 1.25rem auto;
+    text-align: center;
+    color: #2e2a55;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  .results-lead em { font-style: italic; color: #5b21b6; }
+  .results-lead strong { color: #4338ca; }
+
+  .results-table-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    box-shadow: 0 2px 14px rgba(99, 102, 241, 0.08);
+    padding: 1rem;
+  }
+  .small-table { max-width: 720px; }
+
+  .results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    color: #2e2a55;
+  }
+  .results-table th, .results-table td {
+    padding: 6px 10px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .results-table thead th {
+    background: #eef2ff;
+    color: #312e81;
+    font-weight: 700;
+  }
+  .results-table th.grp { border-bottom: 2px solid #c7d2fe; }
+  .results-table .grp-p2v { color: #4338ca; }
+  .results-table .grp-v2p { color: #6d28d9; }
+  .results-table .grp-ivp { color: #be185d; }
+  .results-table .model-col, .results-table .method-col {
+    text-align: left;
+    min-width: 170px;
+  }
+  .results-table tbody td:first-child { text-align: left; }
+  .results-table .row-baseline td { background: #f5f6ff; font-style: italic; }
+  .results-table .row-header td {
+    background: #eef2ff;
+    color: #4338ca;
+    font-weight: 600;
+    text-align: left;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+  }
+  .results-table .row-header.ours td {
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    color: #fff;
+  }
+  .results-table .ours-row td { background: #fdf4ff; font-weight: 600; color: #5b21b6; }
+  .results-table .ours-row td:first-child { color: #4338ca; }
+  .results-table tbody tr:hover td { background: #faf5ff; }
+  .results-table .ours-row:hover td { background: #fae8ff; }
+</style>

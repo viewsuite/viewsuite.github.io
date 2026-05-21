@@ -1,0 +1,216 @@
+{
+  "p2v": [
+    {
+      "id": "20260315-141501-55f55978",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_006",
+      "answer": "C",
+      "correct": true,
+      "raw_response": "<think>Turning left makes the current center features shift right, and looking up should show more upper wall/ceiling. After the small move, the shelf/door area becomes the main view while the papasan chair moves out of frame. That matches image C.</think><action>answer(C)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_left, look_up, move_forward, move_right]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-141501-55f55978/turn_01_01.png",
+        "20260315-141501-55f55978/turn_01_02.png",
+        "20260315-141501-55f55978/turn_01_03.png",
+        "20260315-141501-55f55978/turn_01_04.png",
+        "20260315-141501-55f55978/turn_01_05.png",
+        "20260315-141501-55f55978/turn_01_06.png"
+      ]
+    },
+    {
+      "id": "20260315-142101-f6de6315",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_008",
+      "answer": "A",
+      "correct": true,
+      "raw_response": "<think>The initial view is close to the front of the large shelf. After turning right twice (60\u00b0), looking slightly downward, then moving forward 1.5 m, the camera should end up near the side of that shelf, elevated by 1 m, looking down into the adjacent seating area. This matches image A.</think><action>answer(A)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_right, turn_right, look_down, move_forward, move_forward, move_forward, move_up, move_up]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-142101-f6de6315/turn_01_01.png",
+        "20260315-142101-f6de6315/turn_01_02.png",
+        "20260315-142101-f6de6315/turn_01_03.png",
+        "20260315-142101-f6de6315/turn_01_04.png",
+        "20260315-142101-f6de6315/turn_01_05.png",
+        "20260315-142101-f6de6315/turn_01_06.png"
+      ]
+    },
+    {
+      "id": "20260315-120647-205b5cfd",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0474_04",
+      "sample_label": "scene0474_04_018",
+      "answer": "B",
+      "correct": true,
+      "raw_response": "<think>The initial view is near the chair/shelf area on the room\u2019s right side. Turning left and looking up shifts attention toward the doorway/opening beside the shelf; moving forward and then left places the camera closer to that doorway while still angled upward. This matches image B.</think><action>answer(B)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_left, look_up, move_forward, move_left]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-120647-205b5cfd/turn_01_01.png",
+        "20260315-120647-205b5cfd/turn_01_02.png",
+        "20260315-120647-205b5cfd/turn_01_03.png",
+        "20260315-120647-205b5cfd/turn_01_04.png",
+        "20260315-120647-205b5cfd/turn_01_05.png",
+        "20260315-120647-205b5cfd/turn_01_06.png"
+      ]
+    },
+    {
+      "id": "20260315-121650-d3261eaa",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0474_01",
+      "sample_label": "scene0474_01_003",
+      "answer": "C",
+      "correct": true,
+      "raw_response": "<think>Turning left three times gives a 90\u00b0 left yaw from the initial shelf/whiteboard view, which should face into the desk area. After looking down and strafing right, the resulting perspective best matches the desk corner with multiple monitors and laptop in image C.</think><action>answer(C)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_left, turn_left, turn_left, look_down, move_right]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-121650-d3261eaa/turn_01_01.png",
+        "20260315-121650-d3261eaa/turn_01_02.png",
+        "20260315-121650-d3261eaa/turn_01_03.png",
+        "20260315-121650-d3261eaa/turn_01_04.png",
+        "20260315-121650-d3261eaa/turn_01_05.png",
+        "20260315-121650-d3261eaa/turn_01_06.png"
+      ]
+    },
+    {
+      "id": "20260315-134230-1ea1d3d5",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_007",
+      "answer": "A",
+      "correct": true,
+      "raw_response": "<think>Three left turns = 90\u00b0 left. Relative to the initial view, the moves place the camera slightly to the right of its start and much farther toward the desk, then lower it. The final facing direction is toward the left shelving/window wall, from a position near the bench\u2019s side. This matches image A best.</think><action>answer(A)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_left, turn_left, turn_left, move_backward, move_right, move_right, move_right, move_right, move_down]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-134230-1ea1d3d5/turn_01_01.png",
+        "20260315-134230-1ea1d3d5/turn_01_02.png",
+        "20260315-134230-1ea1d3d5/turn_01_03.png",
+        "20260315-134230-1ea1d3d5/turn_01_04.png",
+        "20260315-134230-1ea1d3d5/turn_01_05.png",
+        "20260315-134230-1ea1d3d5/turn_01_06.png"
+      ]
+    },
+    {
+      "id": "20260315-142026-d8880b22",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_018",
+      "answer": "D",
+      "correct": true,
+      "raw_response": "<think>The initial view is at the top desk facing the wall. After turning left 3 times, the view faces across the room toward the shelving side. Moving backward twice shifts the camera to the right/east end of the desk, and moving down lowers the viewpoint. The resulting scene should show the desk edge on the right, the chair/rug in the middle-left, and the shelving wall ahead. That matches D.</think><action>answer(D)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], after you execute the following action sequence (translation step = 0.5 m; rotation step = 30.0 degrees per step):\n[turn_left, turn_left, turn_left, move_backward, move_backward, move_down]\nwhich of the following images corresponds to the result?\nA. [Image 3]\nB. [Image 4]\nC. [Image 5]\nD. [Image 6]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-142026-d8880b22/turn_01_01.png",
+        "20260315-142026-d8880b22/turn_01_02.png",
+        "20260315-142026-d8880b22/turn_01_03.png",
+        "20260315-142026-d8880b22/turn_01_04.png",
+        "20260315-142026-d8880b22/turn_01_05.png",
+        "20260315-142026-d8880b22/turn_01_06.png"
+      ]
+    }
+  ],
+  "v2p": [
+    {
+      "id": "20260315-203617-7d8c3af3",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_004",
+      "answer": "A",
+      "correct": true,
+      "raw_response": "<think>From the initial view, the camera is near the left-side chair/stool area, facing toward the left wall. The target view is a downward-looking view over the rug near the lower-middle/right side of the room. The only sequence that sensibly rotates toward that area and matches the downward pitch is: turn left 90\u00b0, look down, then translate sideways across the rug.</think><action>answer(A)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [turn_left, turn_left, turn_left, look_down, move_left, move_left]\nB. [turn_left, turn_left, turn_left, turn_left, turn_left, turn_left, move_right, move_up]\nC. [turn_left, turn_left, turn_left, turn_left, turn_left, turn_left, move_backward, move_backward, move_right, move_down]\nD. [turn_right, turn_right, turn_right, turn_right, look_up, move_backward, move_backward, move_left, move_left]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-203617-7d8c3af3/turn_01_01.png",
+        "20260315-203617-7d8c3af3/turn_01_02.png",
+        "20260315-203617-7d8c3af3/turn_01_03.png"
+      ]
+    },
+    {
+      "id": "20260315-145905-6c18058a",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_005",
+      "answer": "B",
+      "correct": true,
+      "raw_response": "<think>The target looks like the camera has turned slightly left from the initial view, then looked down and moved closer toward the chair/stool area. Among the choices, only B matches that combination.</think><action>answer(B)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [turn_right, turn_right, turn_right, turn_right, turn_right, look_down]\nB. [turn_left, look_down, move_forward, move_forward, move_forward, move_right, move_up]\nC. [turn_right, turn_right, turn_right, turn_right, turn_right, look_down, move_backward, move_backward, move_left, move_down]\nD. [turn_right, turn_right, look_down]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-145905-6c18058a/turn_01_01.png",
+        "20260315-145905-6c18058a/turn_01_02.png",
+        "20260315-145905-6c18058a/turn_01_03.png"
+      ]
+    },
+    {
+      "id": "20260315-144348-285315d1",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0377_01",
+      "sample_label": "scene0377_01_010",
+      "answer": "C",
+      "correct": true,
+      "raw_response": "<think>The initial view appears to be a close-up of the dark metal door/cabinet on the left side of the target scene. To reach the target, you would rotate 90\u00b0 to the right to face the windowed wall, and tilt up slightly. No translation seems necessary.</think><action>answer(C)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [turn_left, turn_left, turn_left, turn_left, turn_left, move_backward, move_backward, move_left, move_left, move_down]\nB. [turn_left, turn_left, turn_left, look_up, move_backward, move_backward]\nC. [turn_right, turn_right, turn_right, look_up]\nD. [turn_left, turn_left, turn_left, look_up, move_backward, move_backward]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-144348-285315d1/turn_01_01.png",
+        "20260315-144348-285315d1/turn_01_02.png",
+        "20260315-144348-285315d1/turn_01_03.png"
+      ]
+    },
+    {
+      "id": "20260315-145437-938871cc",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0474_01",
+      "sample_label": "scene0474_01_003",
+      "answer": "C",
+      "correct": true,
+      "raw_response": "<think>The target desk view is most consistent with turning left from the initial whiteboard/shelf aisle to face into the room, then shifting right slightly for alignment. That matches option C.</think><action>answer(C)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [turn_right, look_down, move_forward, move_left, move_down]\nB. [turn_left, turn_left, turn_left, turn_left, turn_left, look_down, move_backward, move_right, move_down]\nC. [turn_left, turn_left, turn_left, look_down, move_right]\nD. [turn_right, look_down, move_backward, move_down]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-145437-938871cc/turn_01_01.png",
+        "20260315-145437-938871cc/turn_01_02.png",
+        "20260315-145437-938871cc/turn_01_03.png"
+      ]
+    },
+    {
+      "id": "20260315-144951-2f2088cc",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_011",
+      "answer": "A",
+      "correct": true,
+      "raw_response": "<think>The target view is consistent with a slight right rotation followed by shifting leftward across the room, bringing the couch more front-on and the backpack/cabinet further into view. That matches the repeated sequence in A/D; I\u2019ll select A.</think><action>answer(A)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [turn_right, move_left, move_left, move_left]\nB. [turn_left, turn_left, turn_left, turn_left, look_up, move_backward, move_right, move_right, move_right, move_right]\nC. [move_forward, move_forward, move_forward, move_forward, move_left, move_left, move_left, move_up, move_up]\nD. [turn_right, move_left, move_left, move_left]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-144951-2f2088cc/turn_01_01.png",
+        "20260315-144951-2f2088cc/turn_01_02.png",
+        "20260315-144951-2f2088cc/turn_01_03.png"
+      ]
+    },
+    {
+      "id": "20260315-200312-387f3f85",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_013",
+      "answer": "C",
+      "correct": true,
+      "raw_response": "<think>The target keeps the same wall/couch area in view but from farther back, slightly lower, and shifted to reveal the chair and cabinet. That best matches a small left turn, moving backward, shifting right, and lowering the viewpoint.</think><action>answer(C)</action>",
+      "system_prompt": "You are a spatial reasoning agent. You are given a question and a set of images. You need to answer the question based on the images.\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>answer(x)</action>\nwhere x is A, B, C, or D.",
+      "user_prompt": "Given the initial view [Image 1] and a top-down reference [Image 2], which action sequence will reach the target view [Image 3]?\n(Action semantics: translation step = 0.5 m; rotation step = 30.0 degrees per step.)\nA. [look_down, move_forward]\nB. [turn_left, turn_left, turn_left, move_forward, move_left]\nC. [turn_left, move_backward, move_backward, move_backward, move_right, move_down, move_down]\nD. [turn_left, turn_left, turn_left, turn_left, turn_left, turn_left, move_left]\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "images": [
+        "20260315-200312-387f3f85/turn_01_01.png",
+        "20260315-200312-387f3f85/turn_01_02.png",
+        "20260315-200312-387f3f85/turn_01_03.png"
+      ]
+    }
+  ]
+}

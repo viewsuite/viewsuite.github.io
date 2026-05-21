@@ -1,0 +1,238 @@
+---
+// TaskExamples.astro — Multi-tab single-turn task viewer (P2V or V2P).
+export interface Example {
+  id: string;
+  model: string;
+  scene: string;
+  sample_label: string;
+  answer: string;
+  correct: boolean;
+  raw_response: string;
+  system_prompt: string;
+  user_prompt: string;
+  images: string[]; // P2V: 6 [initial, topdown, A, B, C, D] · V2P: 3 [initial, topdown, target]
+}
+interface Props {
+  kind: 'p2v' | 'v2p';
+  examples: Example[];
+  rootId: string; // unique prefix for DOM ids
+}
+const { kind, examples, rootId } = Astro.props as Props;
+const first = examples[0];
+const BASE = 'figures/task_examples_v2/';
+---
+<div class={`task-multi ${kind}-multi`} data-root={rootId}>
+  <!-- horizontal scene tabs -->
+  <div class="task-multi-tabs" role="tablist">
+    {examples.map((ex, i) => (
+      <button
+        class={`task-mt-tab ${i === 0 ? 'active' : ''}`}
+        data-ex-id={ex.id}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+      >{ex.sample_label || ex.scene}</button>
+    ))}
+  </div>
+
+  <!-- example body -->
+  <div class="task-multi-body">
+    {kind === 'p2v' ? (
+      <div class="ex-grid p2v-grid" id={`${rootId}-grid`}>
+        <figure><img id={`${rootId}-img0`} src={BASE + first.images[0]} alt="Initial"/><figcaption>Initial</figcaption></figure>
+        <figure><img id={`${rootId}-img1`} src={BASE + first.images[1]} alt="Top-down"/><figcaption>Top-down</figcaption></figure>
+        <figure id={`${rootId}-fig2`} class="opt"><img id={`${rootId}-img2`} src={BASE + first.images[2]} alt="A"/><figcaption id={`${rootId}-cap2`}>A</figcaption></figure>
+        <figure id={`${rootId}-fig3`} class="opt"><img id={`${rootId}-img3`} src={BASE + first.images[3]} alt="B"/><figcaption id={`${rootId}-cap3`}>B</figcaption></figure>
+        <figure id={`${rootId}-fig4`} class="opt"><img id={`${rootId}-img4`} src={BASE + first.images[4]} alt="C"/><figcaption id={`${rootId}-cap4`}>C</figcaption></figure>
+        <figure id={`${rootId}-fig5`} class="opt"><img id={`${rootId}-img5`} src={BASE + first.images[5]} alt="D"/><figcaption id={`${rootId}-cap5`}>D</figcaption></figure>
+      </div>
+    ) : (
+      <div class="ex-grid v2p-grid" id={`${rootId}-grid`}>
+        <figure><img id={`${rootId}-img0`} src={BASE + first.images[0]} alt="Initial"/><figcaption>Initial</figcaption></figure>
+        <figure><img id={`${rootId}-img1`} src={BASE + first.images[1]} alt="Top-down"/><figcaption>Top-down</figcaption></figure>
+        <figure><img id={`${rootId}-img2`} src={BASE + first.images[2]} alt="Target"/><figcaption>Target</figcaption></figure>
+      </div>
+    )}
+
+    <details class="task-disclosure">
+      <summary>Show full prompt</summary>
+      <pre class="task-pre" id={`${rootId}-prompt`}>{first.user_prompt}</pre>
+    </details>
+    <details class="task-disclosure">
+      <summary>Show model's full response</summary>
+      <pre class="task-pre" id={`${rootId}-response`}>{first.raw_response}</pre>
+    </details>
+  </div>
+</div>
+
+<script type="application/json" class={`${rootId}-data`} set:html={JSON.stringify(examples)}></script>
+
+<script define:vars={{ rootId, kind, BASE }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const dataEl = document.querySelector(`script.${rootId}-data`);
+    if (!dataEl) return;
+    const examples = JSON.parse(dataEl.textContent || '[]');
+    if (!examples.length) return;
+
+    const $ = (s) => document.getElementById(s);
+    const wrap = document.querySelector(`.task-multi[data-root='${rootId}']`);
+
+    function render(ex) {
+      const imgCount = kind === 'p2v' ? 6 : 3;
+      for (let i = 0; i < imgCount; i++) {
+        const img = $(`${rootId}-img${i}`);
+        if (img) img.src = BASE + ex.images[i];
+      }
+      $(`${rootId}-prompt`).textContent = ex.user_prompt;
+      $(`${rootId}-response`).textContent = ex.raw_response;
+
+      // For P2V: highlight chosen option
+      if (kind === 'p2v') {
+        const letters = ['A','B','C','D'];
+        letters.forEach((L, i) => {
+          const fig = $(`${rootId}-fig${i + 2}`);
+          const cap = $(`${rootId}-cap${i + 2}`);
+          if (!fig || !cap) return;
+          fig.classList.remove('correct','wrong');
+          let tag = '';
+          if (ex.answer === L) {
+            fig.classList.add(ex.correct ? 'correct' : 'wrong');
+            tag = ex.correct ? ' ✓ chosen' : ' ✗ chosen';
+          }
+          cap.textContent = L + tag;
+        });
+      }
+    }
+
+    const tabRoot = document.querySelector(`.task-multi[data-root='${rootId}'] .task-multi-tabs`);
+    if (tabRoot) {
+      tabRoot.querySelectorAll('.task-mt-tab').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-ex-id');
+          const ex = examples.find((e) => e.id === id);
+          if (!ex) return;
+          tabRoot.querySelectorAll('.task-mt-tab').forEach((b) => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-selected', 'true');
+          render(ex);
+        });
+      });
+    }
+    render(examples[0]);
+  });
+</script>
+
+<style>
+  .task-multi { margin-top: 0.6rem; }
+  .task-multi-tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.65rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e0e7ff;
+    scrollbar-width: thin;
+  }
+  .task-mt-tab {
+    background: #f5f6ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 9px;
+    padding: 0.5rem 0.85rem;
+    cursor: pointer;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e1b4b;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .task-mt-tab:hover { background: #eef2ff; }
+  .task-mt-tab.active {
+    background: linear-gradient(45deg, #6366f1, #4f46e5);
+    color: #fff;
+    border-color: #4338ca;
+  }
+
+  /* Compact image grid (scoped here so it actually applies) */
+  .ex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    margin: 0 auto 1rem auto;
+  }
+  .ex-grid figure {
+    margin: 0;
+    flex: 0 0 auto;
+    width: 130px;
+  }
+  .ex-grid img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 6px;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.1);
+    display: block;
+  }
+  .ex-grid figcaption {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #4338ca;
+    font-weight: 500;
+  }
+  .ex-grid .opt img { border: 2px solid transparent; }
+  .ex-grid .opt.correct img {
+    border-color: #22c55e;
+    box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
+  }
+  .ex-grid .opt.correct figcaption { color: #15803d; font-weight: 600; }
+  .ex-grid .opt.wrong img {
+    border-color: #f43f5e;
+    box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25);
+  }
+  .ex-grid .opt.wrong figcaption { color: #be123c; }
+
+  .task-disclosure {
+    margin-top: 0.7rem;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 8px;
+    padding: 0.55rem 0.9rem;
+  }
+  .task-disclosure > summary {
+    cursor: pointer;
+    color: #4338ca;
+    font-weight: 600;
+    font-size: 0.9rem;
+    list-style: none;
+    user-select: none;
+  }
+  .task-disclosure > summary::before { content: "▸ "; }
+  .task-disclosure[open] > summary::before { content: "▾ "; }
+  .task-disclosure[open] { padding-bottom: 0.85rem; }
+  .task-pre {
+    margin: 0.7rem 0 0 0;
+    background: #1e1b4b;
+    color: #e0e7ff;
+    border-radius: 6px;
+    padding: 0.7rem 0.85rem;
+    font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+
+  @media (max-width: 760px) {
+    .ex-grid figure { width: 100px; }
+    .ex-grid img { width: 100px; height: 100px; }
+  }
+</style>

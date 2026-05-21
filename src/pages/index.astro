@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Cases from '../components/Cases.astro';
+import Algorithm from '../components/Algorithm.astro';
+import ResultsSection from '../components/ResultsSection.astro';
+import FindingsSection from '../components/FindingsSection.astro';
+import AuthorsCitation from '../components/AuthorsCitation.astro';
+
+import '../styles/section.css';
+import '../styles/hero.css';
+import '../styles/authors.css';
+import '../styles/resources.css';
+import '../styles/findings.css';
+
+const pageTitle = 'ViewSuite — Planning with the Views';
+---
+<Layout title={pageTitle}>
+  <Hero />
+  <Cases />
+  <Algorithm />
+  <ResultsSection />
+  <FindingsSection />
+  <AuthorsCitation />
+</Layout>
+
+<script>
+  import { initCitationCopy } from '../scripts/citation';
+  document.addEventListener('DOMContentLoaded', () => {
+    initCitationCopy?.();
+
+    // Per-character reveal on hero title
+    const titleEl = document.getElementById('animated-title');
+    if (titleEl) {
+      const text = titleEl.innerText;
+      titleEl.innerHTML = '';
+      let delayIdx = 0;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === '\n') {
+          titleEl.appendChild(document.createElement('br'));
+          continue;
+        }
+        const span = document.createElement('span');
+        span.className = 'reveal-char';
+        span.style.animationDelay = `${delayIdx * 0.04}s`;
+        span.innerHTML = ch === ' ' ? '&nbsp;' : ch;
+        titleEl.appendChild(span);
+        delayIdx++;
+      }
+    }
+  });
+</script>
