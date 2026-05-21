@@ -1,0 +1,611 @@
+---
+// TrajectoryPlayer.astro — Interactive IVP rollout viewer
+// Renders selectable rollouts with play/step controls, action log, and outcome.
+import rolloutData from '../data/rollouts.json';
+
+const data = rolloutData as {
+  rollouts: Array<{
+    id: string;
+    model: string;
+    scene: string;
+    sample_label: string;
+    success: boolean;
+    anchors: { initial: string; topdown: string; target: string };
+    steps: Array<{ action: string; thinking: string | null; raw: string; view: string | null; submit: boolean; user: string }>;
+    system_prompt: string;
+    user_prompt: string;
+    pos_err_m?: number | null;
+    ang_err_deg?: number | null;
+    threshold: string;
+  }>;
+};
+---
+<div class="player-wrap">
+  <!-- Scene tabs -->
+  <div class="player-tabs" role="tablist">
+    {data.rollouts.map((r, i) => (
+      <button
+        class={`player-tab ${i === 0 ? 'active' : ''}`}
+        data-rollout={r.id}
+        role="tab"
+        aria-selected={i === 0 ? 'true' : 'false'}
+      >
+        <span class="tab-scene-big">{r.sample_label || r.scene}</span>
+        <span class="tab-meta">{r.steps.length} turns</span>
+      </button>
+    ))}
+  </div>
+
+  <!-- Player body -->
+  <div class="player-body">
+    <!-- Anchor strip (initial / top-down / target) -->
+    <div class="anchor-row">
+      <figure class="anchor-fig">
+        <img id="player-initial" src={`figures/rollouts/${data.rollouts[0].anchors.initial}`} alt="initial view"/>
+        <figcaption>Initial</figcaption>
+      </figure>
+      <figure class="anchor-fig">
+        <img id="player-topdown" src={`figures/rollouts/${data.rollouts[0].anchors.topdown}`} alt="top-down"/>
+        <figcaption>Top-down</figcaption>
+      </figure>
+      <figure class="anchor-fig">
+        <img id="player-target" src={`figures/rollouts/${data.rollouts[0].anchors.target}`} alt="target view"/>
+        <figcaption>Target</figcaption>
+      </figure>
+    </div>
+
+    <!-- Main current view + action log -->
+    <div class="play-grid">
+      <div class="current-view-wrap">
+        <img id="player-current" src={`figures/rollouts/${data.rollouts[0].anchors.initial}`} alt="current view"/>
+        <div id="player-overlay" class="overlay hidden">
+          <div class="overlay-inner">
+            <div class="overlay-title">Submitted answer</div>
+            <div class="overlay-sub" id="player-overlay-sub"></div>
+          </div>
+        </div>
+      </div>
+      <div class="side-col">
+        <div class="step-header">
+          <span id="player-stepnum" class="step-num">Step 0 / 0</span>
+          <span id="player-outcome" class="outcome-badge"></span>
+        </div>
+        <div class="action-card prompt-card">
+          <div class="card-label">User prompt at this turn</div>
+          <pre id="player-userturn" class="response-text">—</pre>
+        </div>
+        <div class="action-card response-card">
+          <div class="card-label">Model response at this turn</div>
+          <pre id="player-response" class="response-text">—</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="player-controls">
+      <button id="player-reset" class="ctl-btn" aria-label="Reset">⏮</button>
+      <button id="player-prev"  class="ctl-btn" aria-label="Previous step">◀</button>
+      <button id="player-play"  class="ctl-btn primary" aria-label="Play / pause">▶</button>
+      <button id="player-next"  class="ctl-btn" aria-label="Next step">▶|</button>
+      <input id="player-slider" class="ctl-slider" type="range" min="0" max="0" value="0" step="1"/>
+      <select id="player-speed" class="ctl-speed" aria-label="Playback speed">
+        <option value="1500">1×</option>
+        <option value="900" selected>1.5×</option>
+        <option value="500">3×</option>
+      </select>
+    </div>
+
+    <!-- Disclosure: system prompt only (per-turn user prompt now shows inline) -->
+    <details class="player-disclosure">
+      <summary>Show system prompt</summary>
+      <div class="disclosure-body">
+        <pre id="player-system" class="disclosure-pre">—</pre>
+      </div>
+    </details>
+
+  </div>
+</div>
+
+<script type="application/json" id="rollouts-data" set:html={JSON.stringify(data)}></script>
+
+<script>
+  type Step = { action: string; thinking: string | null; raw: string; view: string | null; submit: boolean; user: string };
+  type Rollout = {
+    id: string;
+    model: string;
+    scene: string;
+    success: boolean;
+    anchors: { initial: string; topdown: string; target: string };
+    steps: Step[];
+    system_prompt: string;
+    user_prompt: string;
+    pos_err_m?: number | null;
+    ang_err_deg?: number | null;
+    threshold: string;
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const dataEl = document.getElementById('rollouts-data');
+    if (!dataEl) return;
+    const data = JSON.parse(dataEl.textContent || '{"rollouts":[]}') as { rollouts: Rollout[] };
+    if (!data.rollouts.length) return;
+
+    const BASE = 'figures/rollouts/';
+    const $ = (id: string) => document.getElementById(id) as HTMLElement;
+    const img = (id: string) => $(id) as HTMLImageElement;
+
+    let current = data.rollouts[0];
+    let stepIdx = 0; // 0 = initial (pre-action); k = after step k
+    let playing = false;
+    let timer: number | null = null;
+
+    function setRollout(r: Rollout) {
+      current = r;
+      stepIdx = 0;
+      img('player-initial').src = BASE + r.anchors.initial;
+      img('player-topdown').src = BASE + r.anchors.topdown;
+      img('player-target').src  = BASE + r.anchors.target;
+      const slider = $('player-slider') as HTMLInputElement;
+      slider.max = String(r.steps.length);
+      slider.value = '0';
+      $('player-system').textContent = r.system_prompt || '(no system prompt)';
+      stopPlay();
+      render();
+    }
+
+    function render() {
+      const r = current;
+      const slider = $('player-slider') as HTMLInputElement;
+      slider.value = String(stepIdx);
+
+      // Outcome badge
+      const oc = $('player-outcome');
+      if (stepIdx >= r.steps.length) {
+        oc.textContent = r.success ? `Success · err ${fmt(r.pos_err_m)} m / ${fmt(r.ang_err_deg)}°` : `Failure · err ${fmt(r.pos_err_m)} m / ${fmt(r.ang_err_deg)}°`;
+        oc.className = 'outcome-badge ' + (r.success ? 'ok' : 'fail');
+      } else {
+        oc.textContent = `target ${r.threshold}`;
+        oc.className = 'outcome-badge neutral';
+      }
+      $('player-stepnum').textContent = `Step ${stepIdx} / ${r.steps.length}`;
+
+      // Current view
+      const currentImg = img('player-current');
+      const overlay = $('player-overlay');
+      const overlaySub = $('player-overlay-sub');
+      if (stepIdx === 0) {
+        currentImg.src = BASE + r.anchors.initial;
+        overlay.classList.add('hidden');
+      } else {
+        const step = r.steps[stepIdx - 1];
+        if (step.submit) {
+          // Submit step: keep prior view, show overlay
+          const last = lastViewBefore(stepIdx);
+          currentImg.src = BASE + last;
+          overlay.classList.remove('hidden');
+          overlaySub.textContent = step.action;
+        } else {
+          if (step.view) currentImg.src = BASE + step.view;
+          overlay.classList.add('hidden');
+        }
+      }
+
+      // User prompt + model response at this step (treat step k as "turn k").
+      const turnIdx = Math.max(0, Math.min(stepIdx, r.steps.length - 1));
+      const turn = r.steps[turnIdx];
+      $('player-userturn').textContent = (turn && turn.user) ? turn.user : '—';
+      if (stepIdx === 0) {
+        $('player-response').textContent = '(press play / ▶| to advance to turn 1)';
+      } else {
+        const step = r.steps[stepIdx - 1];
+        $('player-response').textContent = step.raw || step.action || '—';
+      }
+    }
+
+    function fmt(v: number | null | undefined): string {
+      if (v === null || v === undefined) return '—';
+      return v.toFixed(2);
+    }
+
+    function lastViewBefore(idx: number): string {
+      for (let j = idx - 1; j >= 1; j--) {
+        const s = current.steps[j - 1];
+        if (s.view) return s.view;
+      }
+      return current.anchors.initial;
+    }
+
+    function step(d: number) {
+      stepIdx = Math.max(0, Math.min(current.steps.length, stepIdx + d));
+      render();
+    }
+
+    function startPlay() {
+      if (playing) return;
+      playing = true;
+      ($('player-play')).textContent = '❚❚';
+      const speed = Number(($('player-speed') as HTMLSelectElement).value) || 900;
+      timer = window.setInterval(() => {
+        if (stepIdx >= current.steps.length) {
+          stopPlay();
+          return;
+        }
+        step(1);
+      }, speed);
+    }
+
+    function stopPlay() {
+      playing = false;
+      ($('player-play')).textContent = '▶';
+      if (timer) { window.clearInterval(timer); timer = null; }
+    }
+
+    // Wire controls
+    $('player-reset').addEventListener('click', () => { stopPlay(); stepIdx = 0; render(); });
+    $('player-prev').addEventListener('click', () => { stopPlay(); step(-1); });
+    $('player-next').addEventListener('click', () => { stopPlay(); step(1); });
+    $('player-play').addEventListener('click', () => playing ? stopPlay() : startPlay());
+    ($('player-slider') as HTMLInputElement).addEventListener('input', (e) => {
+      stopPlay();
+      stepIdx = Number((e.target as HTMLInputElement).value);
+      render();
+    });
+    ($('player-speed') as HTMLSelectElement).addEventListener('change', () => {
+      if (playing) { stopPlay(); startPlay(); }
+    });
+
+    // Tab buttons
+    document.querySelectorAll('.player-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = (btn as HTMLElement).dataset.rollout;
+        const r = data.rollouts.find(x => x.id === id);
+        if (!r) return;
+        document.querySelectorAll('.player-tab').forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        setRollout(r);
+      });
+    });
+
+    // Keyboard nav
+    document.addEventListener('keydown', (e) => {
+      const tag = (document.activeElement?.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || tag === 'select') return;
+      if (e.key === 'ArrowRight') { stopPlay(); step(1); }
+      else if (e.key === 'ArrowLeft') { stopPlay(); step(-1); }
+      else if (e.key === ' ') { e.preventDefault(); playing ? stopPlay() : startPlay(); }
+    });
+
+    setRollout(current);
+  });
+</script>
+
+<style>
+  .player-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 14px;
+    box-shadow: 0 2px 14px rgba(99, 102, 241, 0.08);
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .player-tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    border-bottom: 1px solid #e0e7ff;
+    padding-bottom: 0.6rem;
+    margin-bottom: 1rem;
+  }
+  .player-tab {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+    background: #f5f6ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 10px;
+    padding: 0.45rem 0.7rem;
+    cursor: pointer;
+    font-family: inherit;
+    color: #2e2a55;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .player-tab:hover { background: #eef2ff; }
+  .player-tab.active {
+    background: linear-gradient(45deg, #6366f1, #4f46e5);
+    color: #fff;
+    border-color: #4338ca;
+  }
+  .player-tab.active .tab-scene { color: #e0e7ff; }
+  .tab-scene-big {
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    color: #1e1b4b;
+  }
+  .player-tab.active .tab-scene-big { color: #fff; }
+  .tab-meta { font-size: 0.76rem; color: #6366f1; }
+  .player-tab.active .tab-meta { color: #e0e7ff; }
+  .tab-pill {
+    font-size: 0.66rem;
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .pill-ok   { background: #dcfce7; color: #15803d; }
+  .pill-fail { background: #fee2e2; color: #b91c1c; }
+  .player-tab.active .tab-pill { filter: brightness(1.05); }
+
+  .anchor-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+  }
+  .anchor-fig { margin: 0; }
+  .anchor-fig img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.1);
+    background: #fff;
+    border: 1px solid #e0e7ff;
+  }
+  .anchor-fig figcaption {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 0.82rem;
+    color: #4338ca;
+    font-weight: 500;
+  }
+
+  .play-grid {
+    display: grid;
+    grid-template-columns: minmax(260px, 1.4fr) 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  @media (max-width: 760px) {
+    .play-grid { grid-template-columns: 1fr; }
+  }
+
+  .current-view-wrap {
+    position: relative;
+    background: #1e1b4b;
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 1;
+  }
+  .current-view-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .overlay {
+    position: absolute; inset: 0;
+    background: rgba(30, 27, 75, 0.65);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(2px);
+    transition: opacity 0.2s;
+  }
+  .overlay.hidden { opacity: 0; pointer-events: none; }
+  .overlay-inner { text-align: center; padding: 1rem; }
+  .overlay-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; }
+  .overlay-sub {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.85rem;
+    color: #c7d2fe;
+    word-break: break-all;
+  }
+
+  .side-col { display: flex; flex-direction: column; gap: 0.7rem; }
+  .step-header {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.88rem;
+  }
+  .step-num { color: #6366f1; font-weight: 600; font-family: ui-monospace, SFMono-Regular, monospace; }
+  .outcome-badge {
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .outcome-badge.neutral { background: #eef2ff; color: #4338ca; }
+  .outcome-badge.ok      { background: #dcfce7; color: #15803d; }
+  .outcome-badge.fail    { background: #fee2e2; color: #b91c1c; }
+
+  .action-card {
+    background: #f5f6ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 8px;
+    padding: 0.6rem 0.75rem;
+  }
+  .card-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6366f1;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .prompt-card, .response-card {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .response-text {
+    margin: 0;
+    background: #1e1b4b;
+    color: #e0e7ff;
+    border-radius: 6px;
+    padding: 0.65rem 0.8rem;
+    font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 220px;
+  }
+  .prompt-card .response-text { background: #312e81; }
+
+  .player-controls {
+    display: flex; align-items: center; gap: 0.5rem;
+    background: #f5f6ff;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    border: 1px solid #e0e7ff;
+  }
+  .ctl-btn {
+    background: #fff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .ctl-btn:hover { background: #eef2ff; }
+  .ctl-btn:active { transform: scale(0.94); }
+  .ctl-btn.primary {
+    background: linear-gradient(45deg, #6366f1, #4f46e5);
+    color: #fff; border-color: #4338ca;
+  }
+  .ctl-btn.primary:hover { filter: brightness(1.05); }
+  .ctl-slider {
+    flex: 1; min-width: 80px;
+    accent-color: #4f46e5;
+  }
+  .ctl-speed {
+    background: #fff;
+    border: 1px solid #c7d2fe;
+    color: #4338ca;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .player-help {
+    margin-top: 0.6rem;
+    font-size: 0.83rem;
+    color: #5b5a85;
+    line-height: 1.5;
+  }
+  .player-help em { color: #5b21b6; font-style: italic; }
+
+  /* Disclosures */
+  .player-disclosure {
+    margin-top: 0.8rem;
+    background: #f5f6ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 8px;
+    padding: 0.55rem 0.95rem;
+  }
+  .player-disclosure[open] { padding-bottom: 0.9rem; }
+  .player-disclosure > summary {
+    cursor: pointer;
+    color: #4338ca;
+    font-weight: 600;
+    font-size: 0.92rem;
+    list-style: none;
+    user-select: none;
+  }
+  .player-disclosure > summary::before {
+    content: "▸ ";
+    transition: transform 0.2s;
+  }
+  .player-disclosure[open] > summary::before { content: "▾ "; }
+  .disclosure-body {
+    margin-top: 0.7rem;
+  }
+  .disclosure-pre {
+    background: #1e1b4b;
+    color: #e0e7ff;
+    border-radius: 6px;
+    padding: 0.7rem 0.85rem;
+    font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
+    font-size: 0.83rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 360px;
+    overflow-y: auto;
+    margin: 0;
+  }
+  .disclosure-note {
+    color: #5b5a85;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 0.5rem;
+  }
+  .nested-disclosure {
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    margin-bottom: 0.55rem;
+  }
+  .nested-disclosure > summary {
+    cursor: pointer;
+    color: #6366f1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    list-style: none;
+    user-select: none;
+  }
+  .nested-disclosure > summary::before { content: "▸ "; }
+  .nested-disclosure[open] > summary::before { content: "▾ "; }
+  .nested-disclosure[open] { padding-bottom: 0.65rem; }
+  .nested-disclosure[open] > summary { margin-bottom: 0.45rem; }
+  .transcript-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .transcript-list li {
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 6px;
+    padding: 0.55rem 0.75rem;
+  }
+  .transcript-header {
+    color: #4338ca;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .transcript-pre {
+    background: #f8f9ff;
+    border: 1px solid #eef2ff;
+    color: #1e1b4b;
+    border-radius: 4px;
+    padding: 0.45rem 0.6rem;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+  }
+</style>

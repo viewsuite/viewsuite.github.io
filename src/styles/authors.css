@@ -1,0 +1,160 @@
+/* Author styles */
+.authors-list a {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 1px dotted rgba(99, 102, 241, 0.3);
+  padding-bottom: 1px;
+  transition: color 0.2s ease, border-bottom 0.2s ease;
+}
+
+.authors-list a:hover {
+  color: var(--accent-hover);
+  border-bottom: 1px solid var(--accent-hover);
+}
+
+#authors-citation .section-container {
+  text-align: center;
+}
+
+.subsection-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.authors-list {
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+}
+
+.authors-list p {
+  margin-bottom: 0.5rem;
+}
+
+.affiliation-marker {
+  font-size: 0.8em;
+  vertical-align: super;
+  margin-left: 1px;
+  color: var(--accent-color);
+}
+
+.affiliations {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-top: 0.6rem;
+}
+
+.affiliations sup {
+  font-size: 0.75em;
+  margin-right: 1px;
+}
+
+.citation-section p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.citation-block {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 50%, #c7d2fe 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 6px;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+}
+
+.code-container {
+  position: relative;
+  overflow-x: auto;
+}
+
+.citation-block pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  padding-right: 40px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.citation-block code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.copy-button-corner {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.9;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.2);
+  padding: 0;
+}
+
+.copy-button-corner:hover {
+  opacity: 1;
+  background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+}
+
+.copy-button-corner.copied {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.copy-button-corner.copy-error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.copy-button-corner .copy-icon,
+.copy-button-corner .check-icon {
+  width: 18px;
+  height: 18px;
+  color: white;
+}
+
+.copy-button-corner .copy-icon {
+  display: block;
+}
+
+.copy-button-corner .check-icon {
+  display: none;
+}
+
+.copy-button-corner.copied .copy-icon {
+  display: none;
+}
+
+.copy-button-corner.copied .check-icon {
+  display: block;
+}
+
+/* Remove old copy button styles */
+.copy-button {
+  display: none;
+} 

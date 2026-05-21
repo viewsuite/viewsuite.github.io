@@ -1,0 +1,359 @@
+---
+// FindingsSection.astro — Each finding paired with a figure or table.
+---
+<section id="findings" class="content-section">
+  <div class="section-container">
+    <h2 class="section-title">Findings &amp; Analyses</h2>
+    <p class="section-lead">
+      Every analysis from the paper, packaged into one section: where models fail, what bottlenecks IVP, what
+      training actually learns, and how the priors transfer.
+    </p>
+
+    <!-- 1. Planning gap -->
+    <div class="finding-block">
+      <h3>1 · Single-turn understanding vs. multi-turn planning</h3>
+      <p>
+        Single-turn understanding ≫ multi-turn planning. The best VLMs reach ~70% on short-horizon P2V/V2P
+        but <strong>collapse to ≤21%</strong> on Interactive View Planning. Most models score below 10%; on
+        long-horizon samples most fall below 3%. Open-weight models stay below 5% on IVP.
+      </p>
+      <div class="fd-stat-strip">
+        <div class="fd-stat"><div class="num">70.7%</div><div class="lbl">GPT-5.4 Pro · P2V short</div></div>
+        <div class="fd-stat"><div class="num">21.4%</div><div class="lbl">Best IVP (Gemini 3.1 Pro)</div></div>
+        <div class="fd-stat"><div class="num">&lt;5%</div><div class="lbl">Every open-weight model · IVP</div></div>
+        <div class="fd-stat"><div class="num">&lt;3%</div><div class="lbl">Most models · long-horizon IVP</div></div>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Local view-action knowledge does not compose into multi-turn plans.</p>
+    </div>
+
+    <!-- 2. Rotation vs Translation -->
+    <div class="finding-block">
+      <h3>2 · Difficulty along rotation and translation axes</h3>
+      <p>
+        Decomposing view distance into rotation and translation axes flips the difficulty signal. P2V/V2P
+        degrade primarily with rotation distance (cumulative rotations are hard to mentally simulate); IVP
+        reverses this — success collapses with position distance, since 3D translation needs spatial-layout
+        understanding and path planning.
+      </p>
+      <div class="finding-figure">
+        <img src="figures/dual_axis.png" alt="Dual axis: P2V/V2P degrade with rotation, IVP collapses with translation" />
+        <p class="figure-caption">
+          P2V/V2P (left two): accuracy falls along the rotation axis. IVP (right): success collapses along the
+          position axis (~7× drop for GPT-5.4 Pro).
+        </p>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;The two task families are bottlenecked by different spatial reasoning skills.</p>
+    </div>
+
+    <!-- 2b. Sample-level factor analysis -->
+    <div class="finding-block">
+      <h3>2b · Which per-sample factors correlate with success?</h3>
+      <p>
+        Spearman correlation between 12 per-sample factors (geometric distance, visual overlap, directional
+        geometry) and each model's binary success makes the difficulty signal even sharper. <strong>P2V / V2P</strong>
+        success correlates most with <code>orientation_agreement</code> (ρ up to +0.30, same-facing camera pairs
+        are easier). <strong>IVP</strong> success collapses with <code>pos_dist</code> (ρ down to −0.42 for
+        GPT-5.4 Pro), with rotation barely registering. Visual-overlap factors help single-turn tasks but
+        contribute almost nothing to IVP.
+      </p>
+      <div class="finding-figure">
+        <img src="figures/factor_heatmap.png" alt="Spearman correlation between sample factors and per-model success" />
+        <p class="figure-caption">
+          Rows: 12 sample-level factors. Columns: per-model binary success on P2V, V2P, IVP. Blue cells are
+          negative correlations (factor makes the sample harder), red cells positive. The strong negative
+          column under <code>pos_dist</code> in the IVP panel is the position-bottleneck signature.
+        </p>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Position distance is to IVP what orientation agreement is to P2V / V2P — the single dominant predictor of per-sample difficulty.</p>
+    </div>
+
+    <!-- 3. Turn budget -->
+    <div class="finding-block">
+      <h3>3 · Does the turn budget bottleneck IVP?</h3>
+      <p>
+        Doubling the turn budget from 10 → 20 helps every model (Claude Opus 4.6 nearly doubles), but 20 → 30
+        is essentially free. Models exhaust their effective strategies before the turn limit runs out.
+      </p>
+      <div class="fd-table-card">
+        <div class="table-title">IVP All-split accuracy (%)</div>
+        <table class="fd-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>B = 10</th>
+              <th>B = 20</th>
+              <th class="metric-hi">B = 30</th>
+              <th>Δ 10→30</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gemini 3.1 Pro</td>   <td>21.3</td><td>23.0</td><td class="metric-hi">23.2</td><td class="delta-pos">+1.9</td></tr>
+            <tr><td>GPT-5.4</td>          <td>16.6</td><td>19.2</td><td class="metric-hi">20.2</td><td class="delta-pos">+3.6</td></tr>
+            <tr><td>Claude Opus 4.6</td>  <td>10.8</td><td>17.7</td><td class="metric-hi">19.6</td><td class="delta-pos">+8.8</td></tr>
+            <tr><td>Grok 4.20 Beta</td>   <td>7.9</td> <td>11.7</td><td class="metric-hi">11.7</td><td class="delta-pos">+3.8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;IVP is bottlenecked by planning ability, not by horizon length.</p>
+    </div>
+
+    <!-- 4. Rendering quality -->
+    <div class="finding-block">
+      <h3>4 · Does higher-fidelity rendering change the picture?</h3>
+      <p>
+        We re-render the test set with 3D Gaussian Splatting (GS), then re-evaluate at budget = 10. IVP
+        improves only marginally. P2V/V2P show mixed and sometimes large swings — Gemini 3.1 Pro gains +6.5
+        on P2V, while GPT-5.4 and Grok 4.20 Beta <em>lose</em> 14.5 and 13.1 points on V2P.
+      </p>
+      <div class="render-compare">
+        <div class="render-compare-head">
+          Same scene, same target — three independent runs on <code>scene0518_00</code>, all succeed.
+        </div>
+        <div class="render-compare-grid render-compare-grid-3">
+          <figure>
+            <img src="figures/render_compare/pc_traj.gif" alt="Gemini 3.1 Pro on point-cloud rendering"/>
+            <figcaption>
+              <strong>Gemini 3.1 Pro · Point Cloud</strong>
+              <span class="pill-ok">success · 10 turns</span>
+              <span class="cap-sub">default point-cloud render</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="figures/render_compare/gs_traj.gif" alt="Gemini 3.1 Pro on Gaussian-Splat rendering"/>
+            <figcaption>
+              <strong>Gemini 3.1 Pro · Gaussian Splat</strong>
+              <span class="pill-ok">success · 4 turns</span>
+              <span class="cap-sub">higher-fidelity neural render</span>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="figures/render_compare/gpt54_pc_traj.gif" alt="GPT-5.4 on point-cloud rendering"/>
+            <figcaption>
+              <strong>GPT-5.4 · Point Cloud</strong>
+              <span class="pill-ok">success · 6 turns</span>
+              <span class="cap-sub">different model, same render</span>
+            </figcaption>
+          </figure>
+        </div>
+        <p class="render-compare-note">
+          Each GIF cycles through target → initial → agent's per-turn views. The three runs vary on two axes
+          (model and renderer); all reach the target within the unified-distance threshold, but turn counts
+          differ. Higher fidelity occasionally accelerates planning (4 turns vs. 10), yet — as the table
+          below shows — it does not unlock the broader IVP gap.
+        </p>
+      </div>
+      <div class="fd-table-card">
+        <div class="table-title">Gaussian-splat re-render, B = 10 (% accuracy)</div>
+        <table class="fd-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>P2V</th>
+              <th>V2P</th>
+              <th class="metric-hi">IVP</th>
+              <th>Δ Overall vs Point Cloud</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gemini 3.1 Pro</td><td>55.3</td><td>49.4</td><td class="metric-hi">23.2</td><td class="delta-pos">+2.7</td></tr>
+            <tr><td>GPT-5.4</td>       <td>43.8</td><td>31.1</td><td class="metric-hi">18.5</td><td class="delta-neg">−5.6</td></tr>
+            <tr><td>Claude Opus 4.6</td><td>35.3</td><td>41.3</td><td class="metric-hi">12.3</td><td class="delta-pos">+0.6</td></tr>
+            <tr><td>Grok 4.20 Beta</td><td>28.3</td><td>31.5</td><td class="metric-hi">8.1</td> <td class="delta-neg">−10.3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;The bottleneck is composing view changes, not the visual fidelity of each observation.</p>
+    </div>
+
+    <!-- 5. Self-Exploration + Graph Distillation -->
+    <div class="finding-block">
+      <h3>5 · Comparing training recipes for IVP</h3>
+      <p>
+        Direct PPO plateaus at <strong>3.2%</strong>; GRPO with reward-variance filtering reaches
+        <strong>5.2%</strong>; iterating PPO with SFT on only successful trajectories (Success-Only
+        Bootstrapping) gets to <strong>6.2%</strong>. The breakthrough is recognizing that even
+        <em>failed</em> trajectories encode valid view transitions: A → B is supervision regardless of the
+        original goal. Compressing all exploration into a graph and reformulating sampled paths into
+        view-planning demos takes Qwen2.5-VL-7B from <strong>2.5% → 47.8%</strong>.
+      </p>
+      <div class="fd-table-card">
+        <div class="table-title">IVP success rate, Qwen2.5-VL-7B base (%)</div>
+        <table class="fd-table">
+          <thead>
+            <tr><th>Method</th><th>Short</th><th>Long</th><th class="metric-hi">All</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Base model (prompting)</td>             <td>7.1</td>  <td>0.0</td>  <td class="metric-hi">2.5</td></tr>
+            <tr><td>Direct PPO</td>                          <td>7.0</td>  <td>1.2</td>  <td class="metric-hi">3.2</td></tr>
+            <tr><td>Direct GRPO (filter)</td>                <td>10.8</td> <td>2.2</td>  <td class="metric-hi">5.2</td></tr>
+            <tr><td>Success-Only Bootstrapping</td>          <td>14.0</td> <td>2.0</td>  <td class="metric-hi">6.2</td></tr>
+            <tr><td>Random-graph (ablation)</td>             <td>25.4</td> <td>6.4</td>  <td class="metric-hi">13.0</td></tr>
+            <tr><td>1 iter + RL</td>                         <td>24.3</td> <td>5.4</td>  <td class="metric-hi">12.0</td></tr>
+            <tr><td>2 iter + RL</td>                         <td>49.7</td> <td>16.2</td> <td class="metric-hi">27.9</td></tr>
+            <tr class="row-ours">
+              <td>Ours · Qwen2.5-VL-7B (3 iters)</td>
+              <td><b>67.2</b></td><td><b>36.9</b></td><td class="metric-hi"><b>47.8</b></td>
+            </tr>
+            <tr class="row-ours">
+              <td>Ours · Qwen3-VL-8B (3 iters)</td>
+              <td><b>56.8</b></td><td><b>19.4</b></td><td class="metric-hi"><b>32.5</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Useful supervision comes from the geometry recorded by failed exploration, not from filtering for successes.</p>
+    </div>
+
+    <!-- 5b. Protocol ablations: No-Snap / No-Submit -->
+    <div class="finding-block">
+      <h3>5b · How does the ranking shift under No-Snap and No-Submit?</h3>
+      <p>
+        Two evaluation knobs could in principle inflate our IVP numbers: rotation <em>snapping</em> to the
+        discrete <code>30°</code> grid, and the <em>submit</em> requirement. We re-evaluate under
+        <strong>No-Snap</strong> (raw rotation magnitudes executed as-is, no on-grid rounding) and
+        <strong>No-Submit</strong> (success the moment the pose enters the threshold). The ordering between
+        models is unchanged under all three protocols — our trained models continue to dominate the
+        proprietary baselines by a wide margin.
+      </p>
+      <div class="fd-table-card">
+        <div class="table-title">IVP All-split success rate (%), per protocol</div>
+        <table class="fd-table">
+          <thead>
+            <tr>
+              <th>Method</th>
+              <th class="metric-hi">Default</th>
+              <th>No-Snap</th>
+              <th>No-Submit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Gemini 3.1 Pro</td>           <td class="metric-hi">21.4</td><td>15.7</td><td>31.5</td></tr>
+            <tr><td>GPT-5.4</td>                  <td class="metric-hi">16.6</td><td>13.0</td><td>31.3</td></tr>
+            <tr class="row-ours">
+              <td>Ours · Qwen2.5-VL-7B</td>
+              <td class="metric-hi"><b>47.8</b></td><td><b>19.6</b></td><td><b>60.2</b></td>
+            </tr>
+            <tr class="row-ours">
+              <td>Ours · Qwen3-VL-8B</td>
+              <td class="metric-hi"><b>32.5</b></td><td>18.5</td><td>48.3</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        No-Snap <em>lowers</em> every model: without rounding, per-step rotation residuals accumulate over
+        10 turns and the agent drifts off the on-grid pose distribution from which targets are drawn.
+        No-Submit <em>raises</em> every model because no commit to a final answer is required. Across both
+        relaxations, our framework's gains transfer cleanly.
+      </p>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;The 47.8% headline number isn't an artefact of rotation snapping or of the submit step — relax either one and the ranking is preserved.</p>
+    </div>
+
+    <!-- 6. Exploration strategy learned -->
+    <div class="finding-block">
+      <h3>6 · How does the trained agent's coverage evolve over turns?</h3>
+      <p>
+        Tracked 3D point-cloud coverage reveals a clean two-phase strategy: scene coverage grows rapidly in
+        early turns as the agent looks around, then plateaus while the target-intersection ratio accelerates
+        in the middle turns as the agent moves toward the target (peaking near 55%). Base and frontier models
+        show flat or erratic target coverage instead.
+      </p>
+      <div class="finding-figure">
+        <img src="figures/coverage_analysis.png" alt="Two-phase exploration: scene coverage then target intersection" />
+        <p class="figure-caption">
+          Left: scene coverage ratio. Right: target intersection ratio. Our trained model is the only one
+          with sustained monotonic growth on the target axis.
+        </p>
+      </div>
+      <details class="more-details">
+        <summary>Full model comparison (all 15 models)</summary>
+        <img src="figures/coverage_analysis_all.png" alt="Coverage curves across all 15 models" class="details-img"/>
+      </details>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;The trained policy follows a goal-directed two-phase trajectory; baselines do not.</p>
+    </div>
+
+    <!-- 7. Attention analysis -->
+    <div class="finding-block">
+      <h3>7 · How does training reshape per-layer image attention?</h3>
+      <p>
+        Image-attention fraction (the share of response-token attention pointed at image tokens) reveals two
+        patterns. <strong>Layer-wise</strong>: our trained model attends more to images in early layers
+        (L0–L4) and less in deep layers (L8+) than the base — it grounds visually early, then operates in
+        text space. <strong>Turn-wise</strong>: image attention decreases monotonically across turns,
+        consistent with progressive information accumulation, while the base model stays flat.
+      </p>
+      <details class="more-details" open>
+        <summary>Per-layer image-attention breakdown — full 28 layers (click to collapse)</summary>
+        <a href="figures/attention_analysis_all.png" target="_blank" rel="noopener">
+          <img
+            src="figures/attention_analysis_all.png"
+            alt="Image attention fraction across all 28 layers, per turn"
+            class="details-img"
+            style="cursor: zoom-in;"
+          />
+        </a>
+        <p class="figure-caption">
+          Image-attention fraction per layer × turn for all 28 layers. Our trained model front-loads visual
+          grounding then drops off; the base model is flatter across both axes. Click the figure to open at
+          native resolution.
+        </p>
+      </details>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Training reshapes how the VLM uses its visual stream, not just what it outputs.</p>
+    </div>
+
+    <!-- 8. Turn usage distribution -->
+    <div class="finding-block">
+      <h3>8 · How is turn-usage distributed across models?</h3>
+      <p>
+        The base Qwen and GPT-5.4 Pro terminate most rollouts in a single turn (no exploration). Our trained
+        model and Gemini 3.1 Pro use the full 10-turn budget. Of the rollouts that <em>do</em> use all turns,
+        our model maintains a much higher success rate on harder episodes.
+      </p>
+      <div class="finding-figure">
+        <img src="figures/turn_distribution.png" alt="Turn distribution and success by turn count" />
+        <p class="figure-caption">
+          (a) Total rollouts by turn count.&nbsp; (b) Successful rollouts.&nbsp; (c) Success rate by turns used.
+        </p>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Frontier VLMs that look like they're solving IVP often submit instantly without planning.</p>
+    </div>
+
+    <!-- 9. Transfer to other view-related tasks -->
+    <div class="finding-block">
+      <h3>9 · Do the learned priors transfer to other view-related tasks?</h3>
+      <p>
+        Under identical GRPO post-training, our trained model beats the base on both internal and external
+        view-dependent tasks. On the external <strong>MindCube</strong> benchmark (no shared scenes / actions /
+        rendering pipeline) we gain ~10 points.
+      </p>
+      <div class="fd-table-card">
+        <div class="table-title">Spatial-prior transfer under identical GRPO post-training (% accuracy)</div>
+        <table class="fd-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>P2V&nbsp;init</th><th>P2V&nbsp;+GRPO</th>
+              <th>V2P&nbsp;init</th><th>V2P&nbsp;+GRPO</th>
+              <th class="metric-hi">MindCube&nbsp;init</th><th class="metric-hi">MindCube&nbsp;+GRPO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Base Qwen2.5-VL-7B</td>
+              <td>32.1</td><td>45.1</td>
+              <td>29.2</td><td>44.8</td>
+              <td class="metric-hi">33.0</td><td class="metric-hi">56.3</td>
+            </tr>
+            <tr class="row-ours">
+              <td>Ours (after IVP training)</td>
+              <td>25.7</td><td><b>57.3</b></td>
+              <td>31.6</td><td><b>52.8</b></td>
+              <td class="metric-hi">33.1</td><td class="metric-hi"><b>66.2</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="finding-tldr"><strong>Takeaway.</strong>&nbsp;Interactive view planning is not a narrow skill — its priors strengthen view-dependent reasoning both within and beyond ViewSuite.</p>
+    </div>
+  </div>
+</section>

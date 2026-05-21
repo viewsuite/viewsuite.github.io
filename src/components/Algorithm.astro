@@ -1,0 +1,128 @@
+---
+// Algorithm.astro — Iterative training pipeline for ViewSuite
+---
+<section id="method" class="content-section">
+  <div class="section-container">
+    <h2 class="section-title">Self-Exploration with View Graph Distillation</h2>
+
+    <p class="section-lead">
+      Each iteration alternates two stages. In the <strong>self-exploration</strong> stage, the agent
+      interacts with ViewSuite environments and its trajectories are incrementally compressed into a
+      <em>view graph</em>. In the <strong>view graph distillation</strong> stage, paths are sampled
+      from this graph and reformulated into diverse view-planning demonstrations used to fine-tune the
+      policy. The resulting model initializes the next self-exploration stage.
+    </p>
+
+    <div class="pipeline-figure">
+      <img src="figures/iterative_training.png" alt="Iterative training pipeline (self-exploration + view graph distillation)" />
+    </div>
+
+    <div class="method-grid">
+      <div class="method-card">
+        <h3>1. RL Stage</h3>
+        <p>
+          The agent runs IVP rollouts on ViewSuite environments with PPO. Reward is sparse:
+          <code>+1</code> when the submitted target estimate is within <code>0.5 m / 30°</code> of
+          the ground truth, plus a small format reward. Even with success rate near <em>2.5%</em>,
+          every rollout is useful, since it streams into the graph builder.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>2. Graph Construction</h3>
+        <p>
+          A background process incrementally compresses every completed trajectory into a
+          <em>view graph</em>. <strong>Nodes</strong> are viewpoints (with their rendered views);
+          <strong>edges</strong> are actions between viewpoints. <strong>Nodes</strong> and
+          <strong>edges</strong> are deduplicated via viewpoint similarity, so success and failure
+          alike contribute to one shared structured graph.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>3. Task Reformulation</h3>
+        <p>
+          Any path <code>P = (v₀, a₁, v₁, …, a<sub>K</sub>, v<sub>K</sub>)</code> in the graph yields a
+          valid IVP demonstration regardless of whether the original episode succeeded: end node →
+          target, start node → initial view, action chain → labeled plan. This is the lever that
+          lets us learn from <em>failed</em> episodes.
+        </p>
+      </div>
+      <div class="method-card">
+        <h3>4. SFT Stage</h3>
+        <p>
+          Sampled paths are reformulated into supervised view-planning demonstrations and used to
+          fine-tune the policy with standard cross-entropy. The resulting model initializes the
+          next RL stage, kicking off the iteration. Stages alternate <em>RL → SFT → RL → SFT</em>.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-lead {
+    max-width: 920px;
+    margin: 0 auto 2rem auto;
+    color: #2e2a55;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    text-align: left;
+  }
+  .section-lead em { color: #5b21b6; font-style: italic; }
+  .section-lead strong { color: #4338ca; }
+
+  .pipeline-figure {
+    max-width: 1100px;
+    margin: 0 auto 3rem auto;
+    text-align: center;
+  }
+  .pipeline-figure img {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.18);
+    background: #fff;
+    padding: 12px;
+  }
+
+  .method-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  @media (max-width: 900px) {
+    .method-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .method-grid { grid-template-columns: 1fr; }
+  }
+  .method-card {
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .method-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.16);
+  }
+  .method-card h3 {
+    color: #4338ca;
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  .method-card p {
+    color: #3a3656;
+    font-size: 0.97rem;
+    line-height: 1.55;
+  }
+  .method-card code {
+    background: #eef2ff;
+    color: #4338ca;
+    padding: 0 0.25em;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>

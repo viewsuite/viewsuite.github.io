@@ -1,0 +1,266 @@
+---
+// Cases.astro — Three diagnostic tasks with concrete examples
+import TrajectoryPlayer from './TrajectoryPlayer.astro';
+import TaskExamples from './TaskExamples.astro';
+import tasksData from '../data/tasks.json';
+
+const tasks = tasksData as { p2v: any[]; v2p: any[] };
+---
+<section id="benchmark" class="content-section alt-background">
+  <div class="section-container">
+    <h2 class="section-title">Three Diagnostic Tasks</h2>
+    <p class="section-lead">
+      ViewSuite probes view planning along two coupled axes:
+      <em>understanding</em> single-step view transitions, and
+      <em>composing</em> them across multi-turn plans.
+    </p>
+
+    <!-- Task: P2V -->
+    <article class="task-block">
+      <div class="task-head">
+        <div class="task-tag">P2V</div>
+        <h3>Path&#8209;to&#8209;View</h3>
+      </div>
+      <TaskExamples kind="p2v" examples={tasks.p2v} rootId="p2v" />
+    </article>
+
+    <!-- Task: V2P -->
+    <article class="task-block">
+      <div class="task-head">
+        <div class="task-tag">V2P</div>
+        <h3>View&#8209;to&#8209;Path</h3>
+      </div>
+      <TaskExamples kind="v2p" examples={tasks.v2p} rootId="v2p" />
+    </article>
+
+    <!-- Task: IVP -->
+    <article class="task-block">
+      <div class="task-head">
+        <div class="task-tag">IVP</div>
+        <h3>Interactive View Planning</h3>
+      </div>
+      <TrajectoryPlayer />
+    </article>
+
+    <div class="dataset-strip">
+      <div class="strip-item">
+        <div class="strip-num">286</div>
+        <div class="strip-label">ScanNet scenes</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-num">~55K</div>
+        <div class="strip-label">view pairs</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-num">~165K</div>
+        <div class="strip-label">task instances</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-num">12</div>
+        <div class="strip-label">6-DoF actions</div>
+      </div>
+      <div class="strip-item">
+        <div class="strip-num">0.5m / 30°</div>
+        <div class="strip-label">IVP success threshold</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-lead {
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    color: #2e2a55;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    text-align: center;
+  }
+  .section-lead em { color: #5b21b6; font-style: italic; }
+
+  .task-block {
+    max-width: 1080px;
+    margin: 0 auto 2.5rem auto;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 2px 14px rgba(99, 102, 241, 0.08);
+  }
+  .task-head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .task-tag {
+    background: linear-gradient(45deg, #6366f1, #4f46e5);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.95rem;
+    padding: 8px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .task-head h3 {
+    color: #1e1b4b;
+    font-size: 1.2rem;
+    margin: 0;
+  }
+  .task-sub {
+    color: #6366f1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0.1rem 0 0 0;
+  }
+  .task-desc {
+    color: #3a3656;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin: 0.5rem 0 1.25rem 0;
+  }
+
+  .example-card {
+    background: #f5f6ff;
+    border: 1px dashed #c7d2fe;
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+  }
+  .ex-prompt {
+    color: #2e2a55;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 0.85rem;
+  }
+  .ex-prompt code {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+
+  .ex-grid {
+    display: grid;
+    gap: 0.65rem;
+  }
+  .ex-grid figure { margin: 0; }
+  .ex-grid img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(99, 102, 241, 0.1);
+    background: #fff;
+  }
+  .ex-grid figcaption {
+    margin-top: 4px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #4338ca;
+    font-weight: 500;
+  }
+  .ex-grid .opt img { border: 2px solid transparent; }
+  .ex-grid .opt.wrong img { border-color: #f43f5e; box-shadow: 0 2px 8px rgba(244, 63, 94, 0.25); }
+  .ex-grid .opt.wrong figcaption { color: #be123c; }
+  .ex-grid .opt.correct img { border-color: #22c55e; box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3); }
+  .ex-grid .opt.correct figcaption { color: #15803d; font-weight: 600; }
+  .ex-grid .success img { border: 2px solid #22c55e; box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3); }
+  .ex-grid .success figcaption { color: #15803d; }
+  .ex-grid .anchor img { border: 2px solid #4f46e5; }
+
+  .ex-meta {
+    color: #2e2a55;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 0.9rem;
+  }
+  .ex-meta code {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.88em;
+  }
+  .ex-tag {
+    display: inline-block;
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .ex-tag.ok    { background: #dcfce7; color: #15803d; }
+  .ex-tag.wrong { background: #fee2e2; color: #b91c1c; }
+
+  .task-disclosure {
+    margin-top: 0.8rem;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 8px;
+    padding: 0.55rem 0.9rem;
+  }
+  .task-disclosure > summary {
+    cursor: pointer;
+    color: #4338ca;
+    font-weight: 600;
+    font-size: 0.9rem;
+    list-style: none;
+    user-select: none;
+  }
+  .task-disclosure > summary::before { content: "▸ "; }
+  .task-disclosure[open] > summary::before { content: "▾ "; }
+  .task-disclosure[open] { padding-bottom: 0.85rem; }
+  .task-pre {
+    margin: 0.7rem 0 0 0;
+    background: #1e1b4b;
+    color: #e0e7ff;
+    border-radius: 6px;
+    padding: 0.7rem 0.85rem;
+    font-family: ui-monospace, SFMono-Regular, "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 380px;
+    overflow-y: auto;
+  }
+
+  .p2v-grid { grid-template-columns: repeat(6, 1fr); }
+  .v2p-grid { grid-template-columns: repeat(3, 1fr); max-width: 720px; margin-inline: auto; }
+  .ivp-grid { grid-template-columns: repeat(8, 1fr); }
+
+  @media (max-width: 760px) {
+    .p2v-grid { grid-template-columns: repeat(3, 1fr); }
+    .ivp-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .dataset-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    max-width: 1080px;
+    margin: 2.5rem auto 0 auto;
+    background: #fff;
+    border: 1px solid #e0e7ff;
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    box-shadow: 0 2px 12px rgba(99, 102, 241, 0.08);
+  }
+  .strip-item { text-align: center; }
+  .strip-num {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #4f46e5;
+    line-height: 1.1;
+  }
+  .strip-label {
+    margin-top: 0.25rem;
+    font-size: 0.88rem;
+    color: #5b5a85;
+  }
+
+</style>

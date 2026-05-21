@@ -1,0 +1,438 @@
+{
+  "rollouts": [
+    {
+      "id": "20260315-194534-ca58e002",
+      "model": "Gemini 3.1 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_017",
+      "success": true,
+      "anchors": {
+        "target": "20260315-194534-ca58e002/turn_01_01.png",
+        "initial": "20260315-194534-ca58e002/turn_01_02.png",
+        "topdown": "20260315-194534-ca58e002/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "turn_left|turn_left|turn_left",
+          "thinking": "The target view shows a grey sofa with an armrest on the left. Based on the top-down view, this corresponds to the sofa on the right side of the room.\nThe initial view is looking at the bottom sofa. I need to turn to face the right sofa and move towards it.\nInitial rz=180 (facing -y). I will turn left 3 times to face +x (rz=270 or -90).",
+          "raw": "<think>\nThe target view shows a grey sofa with an armrest on the left. Based on the top-down view, this corresponds to the sofa on the right side of the room.\nThe initial view is looking at the bottom sofa. I need to turn to face the right sofa and move towards it.\nInitial rz=180 (facing -y). I will turn left 3 times to face +x (rz=270 or -90).\n</think><action>turn_left|turn_left|turn_left</action>",
+          "view": "20260315-194534-ca58e002/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0203_02.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.9831, ty=3.8467, tz=1.5282, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.2123, ty=3.1325, tz=8.2688, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "move_left|move_forward",
+          "thinking": "Now I am facing the right sofa. The target view shows the armrest on the left, and the back of the sofa.\nIn my current view, I see the back of the sofa, but I am too far to the right (the armrest is on the left, but I need to be closer to it).\nWait, the target view shows the armrest on the left, and the back of the sofa.\nLet's move left (which is +y direction since I'm facing +x).\nAlso, the target view is looking slightly more down or up?\nCurrent rx=-120. Target view seems to have a similar pitch.\nLet's move left and forward.",
+          "raw": "<think>\nNow I am facing the right sofa. The target view shows the armrest on the left, and the back of the sofa.\nIn my current view, I see the back of the sofa, but I am too far to the right (the armrest is on the left, but I need to be closer to it).\nWait, the target view shows the armrest on the left, and the back of the sofa.\nLet's move left (which is +y direction since I'm facing +x).\nAlso, the target view is looking slightly more down or up?\nCurrent rx=-120. Target view seems to have a similar pitch.\nLet's move left and forward.\n</think><action>move_left|move_forward</action>",
+          "view": "20260315-194534-ca58e002/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.9831, ty=3.8467, tz=1.5282, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "move_up|move_forward",
+          "thinking": "I moved left and forward. Now I am closer to the armrest.\nIn the target view, the armrest is on the left, and I can see the top of the backrest.\nI need to move up and maybe look down a bit?\nWait, the target view shows the armrest on the left, and the backrest is quite close.\nLet's move up and forward.",
+          "raw": "<think>\nI moved left and forward. Now I am closer to the armrest.\nIn the target view, the armrest is on the left, and I can see the top of the backrest.\nI need to move up and maybe look down a bit?\nWait, the target view shows the armrest on the left, and the backrest is quite close.\nLet's move up and forward.\n</think><action>move_up|move_forward</action>",
+          "view": "20260315-194534-ca58e002/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.4161, ty=4.3467, tz=1.2782, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "move_right|move_backward",
+          "thinking": "I am now looking at the armrest from above. The target view shows the armrest on the left, but the camera is positioned more to the right (along the backrest).\nLet's move right (which is -y direction).\nAlso, the target view is looking more horizontally or slightly down.\nLet's move right and maybe backward a bit.",
+          "raw": "<think>\nI am now looking at the armrest from above. The target view shows the armrest on the left, but the camera is positioned more to the right (along the backrest).\nLet's move right (which is -y direction).\nAlso, the target view is looking more horizontally or slightly down.\nLet's move right and maybe backward a bit.\n</think><action>move_right|move_backward</action>",
+          "view": "20260315-194534-ca58e002/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=4.0991, ty=4.3467, tz=1.4612, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "answer(3.6661, 3.8467, 1.7112, -120.00, 0.00, -90.00)",
+          "thinking": "This view looks very similar to the target view!\nLet's compare:\nTarget view: The armrest is on the left, the backrest is in the foreground. The gap between the armrest and the other sofa in the background is visible.\nMy current view: The gap is visible, the armrest is on the left. The alignment of the backrest and the background sofa looks almost identical.\nLet's check the height. In the target view, the top of the backrest is slightly lower in the frame, meaning the camera might be slightly higher or pitched down more.\nWait, the target view has the backrest taking up the bottom half of the image. My current view has it taking up a similar amount.\nLet's look at the left edge. The armrest in the target view is cut off slightly on the left. In my current view, it's also cut off slightly.\nThe background sofa on the left: in the target view, the top left corner of the image shows a bit of the background sofa. In my current view, it's very similar.\nI think this is extremely close.\nLet's check the coordinates.\nCurrent: tx=3.6661, ty=3.8467, tz=1.7112, rx=-120, ry=0, rz=-90.\nI will just answer with these coordinates.",
+          "raw": "<think>\nThis view looks very similar to the target view!\nLet's compare:\nTarget view: The armrest is on the left, the backrest is in the foreground. The gap between the armrest and the other sofa in the background is visible.\nMy current view: The gap is visible, the armrest is on the left. The alignment of the backrest and the background sofa looks almost identical.\nLet's check the height. In the target view, the top of the backrest is slightly lower in the frame, meaning the camera might be slightly higher or pitched down more.\nWait, the target view has the backrest taking up the bottom half of the image. My current view has it taking up a similar amount.\nLet's look at the left edge. The armrest in the target view is cut off slightly on the left. In my current view, it's also cut off slightly.\nThe background sofa on the left: in the target view, the top left corner of the image shows a bit of the background sofa. In my current view, it's very similar.\nI think this is extremely close.\nLet's check the coordinates.\nCurrent: tx=3.6661, ty=3.8467, tz=1.7112, rx=-120, ry=0, rz=-90.\nI will just answer with these coordinates.\n</think><action>answer(3.6661, 3.8467, 1.7112, -120.00, 0.00, -90.00)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.6661, ty=3.8467, tz=1.7112, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 5/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0203_02.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.9831, ty=3.8467, tz=1.5282, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.2123, ty=3.1325, tz=8.2688, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 4.3534571633051305e-05,
+      "ang_err_deg": 0.0,
+      "threshold": "0.5 m / 30\u00b0"
+    },
+    {
+      "id": "20260315-232811-7d596188",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0203_02",
+      "sample_label": "scene0203_02_001",
+      "success": true,
+      "anchors": {
+        "target": "20260315-232811-7d596188/turn_01_01.png",
+        "initial": "20260315-232811-7d596188/turn_01_02.png",
+        "topdown": "20260315-232811-7d596188/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "turn_right",
+          "thinking": "Target seems likely to the right of the initial heading, with similar position but a rightward yaw revealing the blanket stack/shelving. Best first probe: turn_right.",
+          "raw": "<think>Target seems likely to the right of the initial heading, with similar position but a rightward yaw revealing the blanket stack/shelving. Best first probe: turn_right.</think><action>turn_right</action>",
+          "view": "20260315-232811-7d596188/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0203_02.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=3.9456, tz=1.5163, rx=-120.00\u00b0, ry=0.00\u00b0, rz=120.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.2123, ty=3.1325, tz=8.2688, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "move_right",
+          "thinking": "Current yaw looks close; target differs mainly by a lateral shift that would push the chair left in frame and reveal more of the folded blankets/shelving on the right. A right strafe is the best probe.",
+          "raw": "<think>Current yaw looks close; target differs mainly by a lateral shift that would push the chair left in frame and reveal more of the folded blankets/shelving on the right. A right strafe is the best probe.</think><action>move_right</action>",
+          "view": "20260315-232811-7d596188/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=3.9456, tz=1.5163, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "move_right",
+          "thinking": "Current view is close but still a bit left of the target: both the chair and the folded blankets appear slightly too far right in frame compared with the target. Another rightward strafe should align them better while keeping the same yaw/pitch.",
+          "raw": "<think>Current view is close but still a bit left of the target: both the chair and the folded blankets appear slightly too far right in frame compared with the target. Another rightward strafe should align them better while keeping the same yaw/pitch.</think><action>move_right</action>",
+          "view": "20260315-232811-7d596188/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=4.4456, tz=1.5163, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "move_left",
+          "thinking": "We overshot slightly to the right; the target had a bit more of the chair visible and less of the shelving. One step left should return to the closest match.",
+          "raw": "<think>We overshot slightly to the right; the target had a bit more of the chair visible and less of the shelving. One step left should return to the closest match.</think><action>move_left</action>",
+          "view": "20260315-232811-7d596188/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=4.9456, tz=1.5163, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "move_backward",
+          "thinking": "Current view is close. To test whether the target is slightly farther back (chair a bit smaller / more right-side shelving visible), I\u2019ll probe one step backward; I can still answer with either this or the previous pose afterward.",
+          "raw": "<think>Current view is close. To test whether the target is slightly farther back (chair a bit smaller / more right-side shelving visible), I\u2019ll probe one step backward; I can still answer with either this or the previous pose afterward.</think><action>move_backward</action>",
+          "view": "20260315-232811-7d596188/turn_06_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=4.4456, tz=1.5163, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 5/10"
+        },
+        {
+          "action": "answer(2.4541, 4.4456, 1.7663, -120, 0, 90)",
+          "thinking": "Current view matches the target very closely in composition and scale.",
+          "raw": "<think>Current view matches the target very closely in composition and scale.</think><action>answer(2.4541, 4.4456, 1.7663, -120, 0, 90)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.4541, ty=4.4456, tz=1.7663, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 6/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0203_02.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0210, ty=3.9456, tz=1.5163, rx=-120.00\u00b0, ry=0.00\u00b0, rz=120.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.2123, ty=3.1325, tz=8.2688, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 6.231178843743271e-05,
+      "ang_err_deg": 0.0,
+      "threshold": "0.5 m / 30\u00b0"
+    },
+    {
+      "id": "20260315-121153-536a8309",
+      "model": "Gemini 3.1 Pro",
+      "scene": "scene0474_00",
+      "sample_label": "scene0474_00_019",
+      "success": true,
+      "anchors": {
+        "target": "20260315-121153-536a8309/turn_01_01.png",
+        "initial": "20260315-121153-536a8309/turn_01_02.png",
+        "topdown": "20260315-121153-536a8309/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "turn_right",
+          "thinking": null,
+          "raw": "<action>turn_right</action>",
+          "view": "20260315-121153-536a8309/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0474_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.6247, ty=3.1875, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.0600, ty=2.6448, tz=7.2479, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "turn_right",
+          "thinking": null,
+          "raw": "<action>turn_right</action>",
+          "view": "20260315-121153-536a8309/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.6247, ty=3.1875, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "move_left",
+          "thinking": "The target view shows a close-up of the wooden shelf with items on it.\nIn the current view, I am looking at the shelf, but from a slightly different angle and distance.\nThe target view has the shelf more centered and closer.\nLet's move left or forward.\nIf I move left, I will be more in front of the shelf.\nLet's try `move_left`.",
+          "raw": "<think>\nThe target view shows a close-up of the wooden shelf with items on it.\nIn the current view, I am looking at the shelf, but from a slightly different angle and distance.\nThe target view has the shelf more centered and closer.\nLet's move left or forward.\nIf I move left, I will be more in front of the shelf.\nLet's try `move_left`.\n</think>\n<action>move_left</action>",
+          "view": "20260315-121153-536a8309/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.6247, ty=3.1875, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "move_down",
+          "thinking": "Moving left brought me closer to the door and the shelf.\nThe target view shows the shelf from a slightly lower angle, or maybe I need to move down.\nWait, the target view has the top of the shelf cut off, and the bottom shelf is visible.\nIn my current view, the top of the shelf is visible.\nLet's move down.",
+          "raw": "<think>\nMoving left brought me closer to the door and the shelf.\nThe target view shows the shelf from a slightly lower angle, or maybe I need to move down.\nWait, the target view has the top of the shelf cut off, and the bottom shelf is visible.\nIn my current view, the top of the shelf is visible.\nLet's move down.\n</think>\n<action>move_down</action>",
+          "view": "20260315-121153-536a8309/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.8747, ty=3.6205, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "move_up",
+          "thinking": "Moving down made me see the lower shelves.\nThe target view shows the top shelf with the grey object, the second shelf with the dark objects, the third shelf with the box with a red circle, and the fourth shelf with the white object.\nIn my current view, the box with the red circle is in the middle.\nIn the target view, the box with the red circle is near the bottom.\nSo I need to move up.\nWait, the target view has the top shelf visible, but the very top of the shelf unit is cut off.\nLet's move up.",
+          "raw": "<think>\nMoving down made me see the lower shelves.\nThe target view shows the top shelf with the grey object, the second shelf with the dark objects, the third shelf with the box with a red circle, and the fourth shelf with the white object.\nIn my current view, the box with the red circle is in the middle.\nIn the target view, the box with the red circle is near the bottom.\nSo I need to move up.\nWait, the target view has the top shelf visible, but the very top of the shelf unit is cut off.\nLet's move up.\n</think>\n<action>move_up</action>",
+          "view": "20260315-121153-536a8309/turn_06_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.8747, ty=3.6205, tz=1.0290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0]\n[Image 1]\nStep 5/10"
+        },
+        {
+          "action": "move_forward",
+          "thinking": "Wait, moving up brought me back to tz=1.5290.\nIn the target view, the top of the shelf is cut off, and the box with the red circle is near the bottom.\nIn my current view, the top of the shelf is visible, and the box with the red circle is near the bottom.\nWait, the target view has the top of the shelf cut off.\nLet's move forward to get closer.",
+          "raw": "<think>\nWait, moving up brought me back to tz=1.5290.\nIn the target view, the top of the shelf is cut off, and the box with the red circle is near the bottom.\nIn my current view, the top of the shelf is visible, and the box with the red circle is near the bottom.\nWait, the target view has the top of the shelf cut off.\nLet's move forward to get closer.\n</think>\n<action>move_forward</action>",
+          "view": "20260315-121153-536a8309/turn_07_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.8747, ty=3.6205, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0]\n[Image 1]\nStep 6/10"
+        },
+        {
+          "action": "answer(4.3077, 3.3705, 1.5290, -90.00, 0.00, -120.00)",
+          "thinking": "Wow, this looks almost exactly like the target view!\nLet's compare the target view and the current view.\nTarget view:\n- The top of the shelf is cut off just above the top shelf.\n- The box with the red circle is near the bottom.\n- The green object on the left is visible.\n- The right side of the shelf is visible.\nCurrent view:\n- The top of the shelf is cut off just above the top shelf.\n- The box with the red circle is near the bottom.\n- The green object on the left is visible.\n- The right side of the shelf is visible.\nThe two images look identical.\nI will output the answer.\nCurrent pose:\ntx=4.3077, ty=3.3705, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0",
+          "raw": "<think>\nWow, this looks almost exactly like the target view!\nLet's compare the target view and the current view.\nTarget view:\n- The top of the shelf is cut off just above the top shelf.\n- The box with the red circle is near the bottom.\n- The green object on the left is visible.\n- The right side of the shelf is visible.\nCurrent view:\n- The top of the shelf is cut off just above the top shelf.\n- The box with the red circle is near the bottom.\n- The green object on the left is visible.\n- The right side of the shelf is visible.\nThe two images look identical.\nI will output the answer.\nCurrent pose:\ntx=4.3077, ty=3.3705, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0\n</think>\n<action>answer(4.3077, 3.3705, 1.5290, -90.00, 0.00, -120.00)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=4.3077, ty=3.3705, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-120.00\u00b0]\n[Image 1]\nStep 7/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0474_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.6247, ty=3.1875, tz=1.5290, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.0600, ty=2.6448, tz=7.2479, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 3.90240249593451e-05,
+      "ang_err_deg": 0.0,
+      "threshold": "0.5 m / 30\u00b0"
+    },
+    {
+      "id": "20260315-235942-f65a1f69",
+      "model": "GPT-5.4 Pro",
+      "scene": "scene0598_00",
+      "sample_label": "scene0598_00_005",
+      "success": true,
+      "anchors": {
+        "target": "20260315-235942-f65a1f69/turn_01_01.png",
+        "initial": "20260315-235942-f65a1f69/turn_01_02.png",
+        "topdown": "20260315-235942-f65a1f69/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "look_down",
+          "thinking": "Target appears to be the same local structure as initial but with camera pitched downward toward the white tabletop/chair area. First get a more informative view by pitching down 30\u00b0.",
+          "raw": "<think>Target appears to be the same local structure as initial but with camera pitched downward toward the white tabletop/chair area. First get a more informative view by pitching down 30\u00b0.</think><action>look_down</action>",
+          "view": "20260315-235942-f65a1f69/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0598_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.9229, ty=3.7995, tz=1.6289, rx=-90.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.8890, ty=3.8800, tz=7.5619, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "move_right",
+          "thinking": "The target looks like a closer, more right-shifted view of the same table setup, with the dark square object cropped to the left and more of the chair/right edge visible. I'll strafe right first.",
+          "raw": "<think>The target looks like a closer, more right-shifted view of the same table setup, with the dark square object cropped to the left and more of the chair/right edge visible. I'll strafe right first.</think><action>move_right</action>",
+          "view": "20260315-235942-f65a1f69/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.9229, ty=3.7995, tz=1.6289, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "move_forward",
+          "thinking": "The target seems closer to the tabletop from this right-shifted position. Moving forward should enlarge the table, crop the dark square at left, and reduce the extra right floor/wall.",
+          "raw": "<think>The target seems closer to the tabletop from this right-shifted position. Moving forward should enlarge the table, crop the dark square at left, and reduce the extra right floor/wall.</think><action>move_forward</action>",
+          "view": "20260315-235942-f65a1f69/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.4229, ty=3.7995, tz=1.6289, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "move_left",
+          "thinking": "The current view seems too far right compared with the target: the chair back is too centered and the dark square object is too cropped. Moving left should place the chair nearer the right edge and reveal more of the tabletop/left object, likely matching the target better.",
+          "raw": "<think>The current view seems too far right compared with the target: the chair back is too centered and the dark square object is too cropped. Moving left should place the chair nearer the right edge and reveal more of the tabletop/left object, likely matching the target better.</think><action>move_left</action>",
+          "view": "20260315-235942-f65a1f69/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.4229, ty=3.3665, tz=1.3789, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "turn_right",
+          "thinking": "The target likely differs from the current view mainly by a rightward yaw: the dark panel is pushed to the left edge and more of the desk corner/right side is visible, while staying similarly pitched downward. I'll inspect by turning right.",
+          "raw": "<think>The target likely differs from the current view mainly by a rightward yaw: the dark panel is pushed to the left edge and more of the desk corner/right side is visible, while staying similarly pitched downward. I'll inspect by turning right.</think><action>turn_right</action>",
+          "view": "20260315-235942-f65a1f69/turn_06_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.9229, ty=3.3665, tz=1.3789, rx=-120.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\n[Image 1]\nStep 5/10"
+        },
+        {
+          "action": "answer(3.9229, 3.3665, 1.3789, -120, 0, 165)",
+          "thinking": "Target appears closest to the step4 position, with a yaw slightly right of 180\u00b0 (about halfway to the current 150\u00b0 view) and similar downward pitch. I'll answer an interpolated pose near that location.",
+          "raw": "<think>Target appears closest to the step4 position, with a yaw slightly right of 180\u00b0 (about halfway to the current 150\u00b0 view) and similar downward pitch. I'll answer an interpolated pose near that location.</think><action>answer(3.9229, 3.3665, 1.3789, -120, 0, 165)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.9229, ty=3.3665, tz=1.3789, rx=-120.00\u00b0, ry=0.00\u00b0, rz=150.00\u00b0]\n[Image 1]\nStep 6/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0598_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.9229, ty=3.7995, tz=1.6289, rx=-90.00\u00b0, ry=0.00\u00b0, rz=180.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=3.8890, ty=3.8800, tz=7.5619, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 0.28938836747455826,
+      "ang_err_deg": 14.99999999999997,
+      "threshold": "0.5 m / 30\u00b0"
+    },
+    {
+      "id": "20260315-193339-703bbf46",
+      "model": "Gemini 3.1 Pro",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_015",
+      "success": true,
+      "anchors": {
+        "target": "20260315-193339-703bbf46/turn_01_01.png",
+        "initial": "20260315-193339-703bbf46/turn_01_02.png",
+        "topdown": "20260315-193339-703bbf46/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "turn_right|turn_right|move_forward",
+          "thinking": "The target view shows a grey cabinet on the left, a white object (possibly a chair back) in the middle, and an orange sofa on the right.\nIn the initial view, the grey cabinet is on the right side of the desk, next to the orange sofa.\nI need to turn right and move towards the grey cabinet and the orange sofa.",
+          "raw": "<think>\nThe target view shows a grey cabinet on the left, a white object (possibly a chair back) in the middle, and an orange sofa on the right.\nIn the initial view, the grey cabinet is on the right side of the desk, next to the orange sofa.\nI need to turn right and move towards the grey cabinet and the orange sofa.\n</think><action>turn_right|turn_right|move_forward</action>",
+          "view": "20260315-193339-703bbf46/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0518_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0986, ty=0.8662, tz=1.5552, rx=-120.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2807, ty=2.9120, tz=6.1570, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "turn_left|turn_left|move_left",
+          "thinking": "I am looking at the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to turn left and move left.",
+          "raw": "<think>\nI am looking at the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to turn left and move left.\n</think><action>turn_left|turn_left|move_left</action>",
+          "view": "20260315-193339-703bbf46/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.4736, ty=1.0827, tz=1.3052, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "move_forward|move_forward|turn_right|turn_right",
+          "thinking": "I am looking at the desk and chairs. The grey cabinet is on the right side of the desk.\nI need to move forward and turn right.",
+          "raw": "<think>\nI am looking at the desk and chairs. The grey cabinet is on the right side of the desk.\nI need to move forward and turn right.\n</think><action>move_forward|move_forward|turn_right|turn_right</action>",
+          "view": "20260315-193339-703bbf46/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=1.9736, ty=1.0827, tz=1.3052, rx=-120.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "turn_left|move_forward|move_up",
+          "thinking": "I am looking at the orange sofa. The grey cabinet is on the left.\nI need to turn left and move forward.",
+          "raw": "<think>\nI am looking at the orange sofa. The grey cabinet is on the left.\nI need to turn left and move forward.\n</think><action>turn_left|move_forward|move_up</action>",
+          "view": "20260315-193339-703bbf46/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=1.9736, ty=1.9488, tz=0.8052, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "move_forward|turn_right|turn_right",
+          "thinking": "I am looking at the grey cabinet and the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to move forward and turn right.",
+          "raw": "<think>\nI am looking at the grey cabinet and the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to move forward and turn right.\n</think><action>move_forward|turn_right|turn_right</action>",
+          "view": "20260315-193339-703bbf46/turn_06_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.3151, ty=2.5403, tz=0.9882, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-30.00\u00b0]\n[Image 1]\nStep 5/10"
+        },
+        {
+          "action": "turn_left|move_left|look_up",
+          "thinking": "I am looking at the orange sofa. The grey cabinet is on the left.\nI need to turn left and move left.",
+          "raw": "<think>\nI am looking at the orange sofa. The grey cabinet is on the left.\nI need to turn left and move left.\n</think><action>turn_left|move_left|look_up</action>",
+          "view": "20260315-193339-703bbf46/turn_07_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.5316, ty=2.9153, tz=0.7382, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 6/10"
+        },
+        {
+          "action": "turn_right|move_right|move_up",
+          "thinking": "I am looking at the grey cabinet and the white object. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to turn right and move right.",
+          "raw": "<think>\nI am looking at the grey cabinet and the white object. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to turn right and move right.\n</think><action>turn_right|move_right|move_up</action>",
+          "view": "20260315-193339-703bbf46/turn_08_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2816, ty=3.3483, tz=0.7382, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\n[Image 1]\nStep 7/10"
+        },
+        {
+          "action": "move_left|look_down",
+          "thinking": "I am looking at the white object and the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to move left and look down.",
+          "raw": "<think>\nI am looking at the white object and the orange sofa. The target view shows the grey cabinet on the left and the orange sofa on the right.\nI need to move left and look down.\n</think><action>move_left|look_down</action>",
+          "view": "20260315-193339-703bbf46/turn_09_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2816, ty=2.8483, tz=1.2382, rx=-90.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 8/10"
+        },
+        {
+          "action": "move_down|move_right",
+          "thinking": "The current view is very close to the target view.\nThe target view shows the grey cabinet on the left, the white object in the middle, and the orange sofa on the right.\nThe current view shows the grey cabinet on the left, the white object in the middle, and the orange sofa on the right.\nThe target view is slightly lower and slightly to the right.\nI will move down and move right.",
+          "raw": "<think>\nThe current view is very close to the target view.\nThe target view shows the grey cabinet on the left, the white object in the middle, and the orange sofa on the right.\nThe current view shows the grey cabinet on the left, the white object in the middle, and the orange sofa on the right.\nThe target view is slightly lower and slightly to the right.\nI will move down and move right.\n</think><action>move_down|move_right</action>",
+          "view": "20260315-193339-703bbf46/turn_10_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2816, ty=3.3483, tz=1.2382, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 9/10"
+        },
+        {
+          "action": "answer(2.2816, 3.3483, 1.2382, -120.00, 0.00, -90.00)",
+          "thinking": "The previous view was closer. I moved down and right, which made me look at the sofa.\nI should move left and up to get back to the previous view, then answer.\nWait, I only have 1 turn left. I must answer now.\nThe previous view was at [tx=2.2816, ty=3.3483, tz=1.2382, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0].\nLet's use that pose.",
+          "raw": "<think>\nThe previous view was closer. I moved down and right, which made me look at the sofa.\nI should move left and up to get back to the previous view, then answer.\nWait, I only have 1 turn left. I must answer now.\nThe previous view was at [tx=2.2816, ty=3.3483, tz=1.2382, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0].\nLet's use that pose.\n</think><action>answer(2.2816, 3.3483, 1.2382, -120.00, 0.00, -90.00)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0316, ty=2.8483, tz=0.8052, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\n[Image 1]\nStep 10/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0518_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.0986, ty=0.8662, tz=1.5552, rx=-120.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2807, ty=2.9120, tz=6.1570, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 0.25945246615947937,
+      "ang_err_deg": 0.0,
+      "threshold": "0.5 m / 30\u00b0"
+    },
+    {
+      "id": "20260316-004046-fbe82c16",
+      "model": "GPT-5.4",
+      "scene": "scene0518_00",
+      "sample_label": "scene0518_00_004",
+      "success": true,
+      "anchors": {
+        "target": "20260316-004046-fbe82c16/turn_01_01.png",
+        "initial": "20260316-004046-fbe82c16/turn_01_02.png",
+        "topdown": "20260316-004046-fbe82c16/turn_01_03.png"
+      },
+      "steps": [
+        {
+          "action": "turn_left",
+          "thinking": "Need localize target near shelving by table; first inspect by rotating left from the couch corner.",
+          "raw": "<think>Need localize target near shelving by table; first inspect by rotating left from the couch corner.</think><action>turn_left</action>",
+          "view": "20260316-004046-fbe82c16/turn_02_01.png",
+          "submit": false,
+          "user": "You're in the scene scene0518_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2807, ty=2.9120, tz=6.1570, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10"
+        },
+        {
+          "action": "turn_left|turn_left",
+          "thinking": "Rotate further left to bring the shelving wall into view before translating.",
+          "raw": "<think>Rotate further left to bring the shelving wall into view before translating.</think><action>turn_left|turn_left</action>",
+          "view": "20260316-004046-fbe82c16/turn_03_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-60.00\u00b0]\n[Image 1]\nStep 2/10"
+        },
+        {
+          "action": "turn_left",
+          "thinking": "The target shelf is likely further left around this corner; continue sweeping left to locate it.",
+          "raw": "<think>The target shelf is likely further left around this corner; continue sweeping left to locate it.</think><action>turn_left</action>",
+          "view": "20260316-004046-fbe82c16/turn_04_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\n[Image 1]\nStep 3/10"
+        },
+        {
+          "action": "turn_left",
+          "thinking": "Continue the sweep; the storage shelf should come into view after another left turn.",
+          "raw": "<think>Continue the sweep; the storage shelf should come into view after another left turn.</think><action>turn_left</action>",
+          "view": "20260316-004046-fbe82c16/turn_05_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=30.00\u00b0]\n[Image 1]\nStep 4/10"
+        },
+        {
+          "action": "turn_left",
+          "thinking": "The target shelving is appearing on the left edge; one more left turn should center it and let me estimate the needed translation.",
+          "raw": "<think>The target shelving is appearing on the left edge; one more left turn should center it and let me estimate the needed translation.</think><action>turn_left</action>",
+          "view": "20260316-004046-fbe82c16/turn_06_01.png",
+          "submit": false,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=60.00\u00b0]\n[Image 1]\nStep 5/10"
+        },
+        {
+          "action": "answer(2.7283,3.4564,1.4219,-120,0,120)",
+          "thinking": "Current position appears correct; the target is best matched by one more 30\u00b0 left yaw from here, with the same height and pitch.",
+          "raw": "<think>Current position appears correct; the target is best matched by one more 30\u00b0 left yaw from here, with the same height and pitch.</think><action>answer(2.7283,3.4564,1.4219,-120,0,120)</action>",
+          "view": null,
+          "submit": true,
+          "user": "format: ok\nCurrent camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=-0.00\u00b0, rz=90.00\u00b0]\n[Image 1]\nStep 6/10"
+        }
+      ],
+      "system_prompt": "You are solving an active-exploration pose estimation task.\n\nGOAL\nPredict the TARGET VIEW absolute camera pose (camera-to-world, c2w) as a 6-DoF vector:\n[tx, ty, tz, rx, ry, rz]\n\n- tx, ty, tz are translations in meters\n- rx, ry, rz are rotations in DEGREES\n- rotation order is Euler XYZ\n\nYou may explore the 3D scene using the available camera-control actions, then submit a final answer.\nYour predicted pose should be as close as possible to the target pose. To achieve this, navigate to a view that matches the target view as closely as possible.\nTURN LIMIT\nYou must complete the task within 10 turns, including the final answer.\n\nOUTPUT FORMAT (STRICT)\nYou can think first, which is optional, then answer, respond in this format:\n<think>...</think><action>action_1|action_2|action_3...</action>\n\n\nFORMAT RULES\n- Do NOT output any text outside the expected tags.\n- Use '|' to separate multiple actions.\n- Actions must be chosen from the supported action list.\n- The final response MUST contain exactly one answer(...).\n- The episode terminates immediately after answer(...).\n- You may explore first, or answer immediately if confident.\n\n\nSUPPORTED ACTIONS\n-----------------\nArguments are inside parentheses.\n\n- move_forward : move forward on the ground plane by 0.5 meters.\n- move_backward : move backward on the ground plane by 0.5 meters.\n- move_right : move right on the ground plane by 0.5 meters.\n- move_left : move left on the ground plane by 0.5 meters.\n- move_up : move up by 0.5 meters.\n- move_down : move down by 0.5 meters.\n- turn_left : yaw left by 30.0 degrees.\n- turn_right : yaw right by 30.0 degrees.\n- look_up : pitch up by 30.0 degrees.\n- look_down : pitch down by 30.0 degrees.\n- rotate_ccw : roll counter clockwise by 30.0 degrees.\n- rotate_cw : roll clockwise by 30.0 degrees.\n- answer : answer(tx, ty, tz, rx, ry, rz), where tx, ty, tz are translation in meters and rx, ry, rz are rotation in degrees. All arguments must be positional plain numbers. This action is terminal and no further actions can be taken.- The episode terminates immediately after calling answer(...).\nNo further actions are allowed.\n\nDISCRETE MODE\n-------------\n- translation step: 0.5 meters\n- rotation step: 30.0 degrees\n\n(Note: after every rotation, the Euler angles (rx, ry, rz) are rounded to the nearest integer multiples of the rotation step along each axis.)",
+      "user_prompt": "You're in the scene scene0518_00.\nPlease study the target view [Image 1], the initial view [Image 2], and the top-down view [Image 3].\nYou start from the initial view. Move toward the target view using actions\nInitial view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.7283, ty=3.4564, tz=1.4219, rx=-120.00\u00b0, ry=0.00\u00b0, rz=-90.00\u00b0]\nTop-down view camera 6-DoF (c2w, Euler XYZ, DEGREES):\n[tx=2.2807, ty=2.9120, tz=6.1570, rx=180.00\u00b0, ry=0.00\u00b0, rz=0.00\u00b0]\nSuccess thresholds: position error <= 0.5m, rotation error <= 30.0\u00b0\nStep 1/10",
+      "pos_err_m": 0.4999733801346083,
+      "ang_err_deg": 29.99999999999998,
+      "threshold": "0.5 m / 30\u00b0"
+    }
+  ]
+}
