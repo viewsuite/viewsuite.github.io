@@ -133,7 +133,8 @@
   text-align: center;
 }
 
-.hero-teaser img {
+.hero-teaser img,
+.hero-teaser video {
   width: 100%;
   height: auto;
   filter: drop-shadow(0 8px 24px rgba(99, 102, 241, 0.22));
